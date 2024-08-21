@@ -3,9 +3,8 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import bcrypt from 'bcryptjs'
 import sequelize from '../../../../db_connection'
 import { DataTypes } from 'sequelize'
-import initAdminModel from '../../../../models/admin' // 引入你的模型文件
+import initAdminModel from '../../../../models/admin'
 
-// 初始化模型
 const Admin = initAdminModel(sequelize, DataTypes)
 
 const handler = NextAuth({
@@ -18,16 +17,15 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          // 确保 sequelize 连接已经建立
+          // 確保連線到資料庫
           await sequelize.authenticate()
 
-          // 使用初始化后的模型进行数据库查询
           const user = await Admin.findOne({
             where: { account: credentials.account },
           })
 
           if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { name: user.username, id: user.id }
+            return { name: user.name }
           }
 
           return null
