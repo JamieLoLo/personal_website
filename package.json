@@ -6,14 +6,22 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "migration:create": "dotenv -- sequelize-cli migration:create",
+    "migrate": "dotenv -- sequelize-cli db:migrate",
+    "migrate:rollback": "dotenv -- sequelize-cli db:migrate:undo",
+    "migrate:rollback:all": "dotenv -- sequelize-cli db:migrate:undo:all",
+    "seed:all": "dotenv -- sequelize-cli db:seed:all"
   },
   "dependencies": {
     "@react-three/drei": "^9.111.2",
     "@react-three/fiber": "^8.17.5",
     "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "dotenv-cli": "^7.4.2",
     "mysql2": "^3.11.0",
     "next": "14.2.5",
+    "next-auth": "^4.24.7",
     "react": "^18",
     "react-device-detect": "^2.2.3",
     "react-dom": "^18",
