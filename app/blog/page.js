@@ -1,4 +1,4 @@
-import Nav from '@/components/blog/Nav'
+import Nav from '@/components/blog/nav'
 import PostPreview from '@/components/blog/PostPreview'
 import RightList from '@/components/blog/RightList'
 import { dummyData } from '@/dummyData'

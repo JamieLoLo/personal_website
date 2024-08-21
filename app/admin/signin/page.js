@@ -1,16 +1,39 @@
 'use client'
 
+import { useState } from 'react'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import { isMobile } from 'react-device-detect'
 import { FaUserLarge } from 'react-icons/fa6'
-import { FaLock } from 'react-icons/fa'
+import { FaLock } from 'react-icons/fa6'
 
 export default function Admin() {
+  const [account, setAccount] = useState('')
+  const [password, setPassword] = useState('')
+  const router = useRouter()
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    const result = await signIn('credentials', {
+      redirect: false,
+      account,
+      password,
+    })
+
+    if (result?.error) {
+      console.error(result.error)
+    } else {
+      router.push('/blog')
+      console.log('success!!!!')
+    }
+  }
+
   return (
     <div className='w-screen h-[100dvh] flex items-center justify-center'>
       <form
-        action=''
+        onSubmit={handleSubmit}
         className='w-[250px] relative flex flex-col items-center'
-        method='POST'
       >
         <div className='w-full border rounded-[50px] flex py-[10px] px-[10px]'>
           <label
@@ -23,7 +46,9 @@ export default function Admin() {
             type='text'
             name='account'
             id='account'
-            className='flex-1 focus:outline-none'
+            value={account}
+            onChange={(e) => setAccount(e.target.value)}
+            className='flex-1 focus:outline-none bg-white'
           />
         </div>
         <div className='w-full border rounded-[50px] flex mt-[16px] py-[10px] px-[10px]'>
@@ -37,7 +62,9 @@ export default function Admin() {
             type='password'
             name='password'
             id='password'
-            className='flex-1 focus:outline-none'
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            className='flex-1 focus:outline-none bg-white'
           />
         </div>
         <button
@@ -46,7 +73,7 @@ export default function Admin() {
             isMobile ? 'bg-mainGrey-100' : 'bg-mainGrey-100/85'
           } ${!isMobile && 'hover:scale-[1.05] hover:bg-mainGrey-100'}`}
         >
-          LOGIN
+          SIGN IN
         </button>
       </form>
     </div>
