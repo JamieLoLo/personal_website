@@ -42,12 +42,12 @@ html {
 .NotoSansM {
   font-family: 'Noto Sans TC', sans-serif;
   font-optical-sizing: auto;
-  font-weight: 600;
+  font-weight: 500;
 }
 .NotoSansB {
   font-family: 'Noto Sans TC', sans-serif;
   font-optical-sizing: auto;
-  font-weight: 800;
+  font-weight: 900;
 }
 .EB-GaramondR {
   font-family: 'EB Garamond', serif;

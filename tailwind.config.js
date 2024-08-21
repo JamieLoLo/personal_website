@@ -24,6 +24,9 @@ module.exports = {
         mainGrey2: {
           100: '#E2E2E2',
         },
+        textBlack: {
+          100: '#242424',
+        },
       },
     },
     screens: {
