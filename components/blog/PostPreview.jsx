@@ -1,11 +1,20 @@
-import Image from 'next/image'
+'use client'
 
-export default function PostPreview({ title, content }) {
+import Image from 'next/image'
+import { useRouter } from 'next/navigation'
+
+export default function PostPreview({ title, content, id }) {
+  const router = useRouter()
+
   const previewContent =
     content.length > 50 ? content.slice(0, 50) + '...' : content
 
+  const handleClick = () => {
+    router.push(`/blog/${id}`)
+  }
+
   return (
-    <div className=' w-full flex cursor-pointer'>
+    <div className='w-full flex cursor-pointer' onClick={handleClick}>
       <div className='w-[75%]'>
         <p className='text-[24px] NotoSansM'>{title}</p>
         <p className='text-[16px] text-mainGrey-100 py-[16px] whitespace-pre-wrap text-justify'>
