@@ -10,6 +10,7 @@ import { FaLock } from 'react-icons/fa6'
 export default function Admin() {
   const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
+  const [showErrorMsg, setShowErrorMsg] = useState(false)
   const router = useRouter()
 
   const handleSubmit = async (e) => {
@@ -22,10 +23,9 @@ export default function Admin() {
     })
 
     if (result?.error) {
-      console.error(result.error)
+      setShowErrorMsg(true)
     } else {
       router.push('/blog')
-      console.log('success!!!!')
     }
   }
 
@@ -35,7 +35,13 @@ export default function Admin() {
         onSubmit={handleSubmit}
         className='w-[250px] relative flex flex-col items-center'
       >
-        <div className='w-full border rounded-[50px] flex py-[10px] px-[10px]'>
+        <div className='w-full border rounded-[50px] flex py-[10px] px-[10px] relative'>
+          {showErrorMsg && (
+            <p className='text-red-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-[350%] whitespace-nowrap NotoSansB'>
+              Invalid username or password
+            </p>
+          )}
+
           <label
             htmlFor='account'
             className='w-[40px] relative flex justify-center'
@@ -47,7 +53,10 @@ export default function Admin() {
             name='account'
             id='account'
             value={account}
-            onChange={(e) => setAccount(e.target.value)}
+            onChange={(e) => {
+              setAccount(e.target.value)
+              setShowErrorMsg(false)
+            }}
             className='flex-1 focus:outline-none bg-white'
           />
         </div>
@@ -63,7 +72,10 @@ export default function Admin() {
             name='password'
             id='password'
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              setPassword(e.target.value)
+              setShowErrorMsg(false)
+            }}
             className='flex-1 focus:outline-none bg-white'
           />
         </div>
