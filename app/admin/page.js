@@ -1,10 +1,5 @@
 'use client'
 
-import Nav from '@/components/blog/Nav'
-import PostPreview from '@/components/blog/PostPreview'
-import RightList from '@/components/blog/RightList'
-import { dummyData } from '@/dummyData'
-import Image from 'next/image'
 import { isMobile } from 'react-device-detect'
 import { FaUserLarge } from 'react-icons/fa6'
 import { FaLock } from 'react-icons/fa'
