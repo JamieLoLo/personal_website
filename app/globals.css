@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Noto+Sans+TC:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital@0;1&family=Noto+Sans+TC:wght@100..900&family=Noto+Serif+TC:wght@200..900&display=swap');
 
 /* 防止 Android 點擊反白 */
 * {
@@ -11,6 +11,15 @@
 
 *::-webkit-scrollbar {
   display: none;
+}
+
+/* 選擇瀏覽器紀錄 input 時不被改變背景色 */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0px 1000px white inset !important;
+  box-shadow: 0 0 0px 1000px white inset !important;
+  -webkit-text-fill-color: #000 !important;
 }
 
 :root {
@@ -50,6 +59,21 @@ html {
 }
 .NotoSansB {
   font-family: 'Noto Sans TC', sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 900;
+}
+.NotoSerifR {
+  font-family: 'Noto Serif TC', serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+}
+.NotoSerifM {
+  font-family: 'Noto Serif TC', serif;
+  font-optical-sizing: auto;
+  font-weight: 500;
+}
+.NotoSerifB {
+  font-family: 'Noto Serif TC', serif;
   font-optical-sizing: auto;
   font-weight: 900;
 }
