@@ -13,6 +13,9 @@ export default function Nav() {
   const goBlogPage = () => {
     router.push(`/blog`)
   }
+  const goCreate = () => {
+    router.push(`/admin/create`)
+  }
 
   return (
     <div className='fixed top-0 left-0 w-full h-[60px] z-10 flex border-b items-center justify-between px-[20px] bg-white'>
@@ -37,11 +40,12 @@ export default function Nav() {
             className={`text-[26px] cursor-pointer  ${
               isMobile ? 'text-mainGrey-100' : 'text-mainGrey-100/85'
             } ${!isMobile && 'hover:scale-[1.05] hover:text-mainGrey-100'}`}
+            onClick={goCreate}
           />
         )}
         {session && session.user.name === 'Jamie' && (
           <FaPowerOff
-            className={`text-[26px] cursor-pointer text-mainGrey-100 ${
+            className={`text-[26px] cursor-pointer  ${
               isMobile ? 'text-mainGrey-100' : 'text-mainGrey-100/85'
             } ${!isMobile && 'hover:scale-[1.05] hover:text-mainGrey-100'}`}
             onClick={signOut}
