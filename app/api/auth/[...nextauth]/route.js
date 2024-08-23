@@ -7,7 +7,7 @@ import initAdminModel from '../../../../models/admin'
 
 const Admin = initAdminModel(sequelize, DataTypes)
 
-const handler = NextAuth({
+export const authOptions = {
   providers: [
     CredentialsProvider({
       name: 'Credentials',
@@ -17,15 +17,15 @@ const handler = NextAuth({
       },
       async authorize(credentials) {
         try {
-          // 確保連線到資料庫
+          // 确保连线到数据库
           await sequelize.authenticate()
 
           const user = await Admin.findOne({
             where: { account: credentials.account },
           })
 
-          if (user && bcrypt.compareSync(credentials.password, user.password)) {
-            return { name: user.name }
+          if (user && bcrypt.compare(credentials.password, user.password)) {
+            return { id: user.id, name: user.name }
           }
 
           return null
@@ -43,17 +43,21 @@ const handler = NextAuth({
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        token.name = user.name
       }
       return token
     },
     async session({ session, token }) {
-      session.user.id = token.id
+      session.user = { ...session.user, id: token.id }
       return session
     },
   },
   pages: {
     signIn: '/admin/signin',
   },
-})
+}
+
+// 使用 authOptions 初始化 NextAuth
+const handler = NextAuth(authOptions)
 
 export { handler as GET, handler as POST }
