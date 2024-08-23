@@ -31,7 +31,7 @@ export default function PostPreview({ title, content, id, onRefresh }) {
             e.stopPropagation()
           }}
         >
-          <p className='NotoSansB text-[35px] text-textBlack-100'>Delete?</p>
+          <p className='NotoSansM text-[35px] text-textBlack-100'>Delete?</p>
           <div className='flex gap-[20px] NotoSansR'>
             <button
               className={`bg-red-500 px-[10px] py-[5px] text-white rounded-[5px] ${
