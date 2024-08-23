@@ -10,19 +10,34 @@ import { useEffect, useState } from 'react'
 
 export default function Blog() {
   const [articles, setArticles] = useState([])
+  const [categories, setCategories] = useState([])
+
+  const fetchArticles = async () => {
+    try {
+      const response = await axios.get('/api/articles')
+      setArticles(response.data)
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+    }
+  }
+
+  const fetchCategories = async () => {
+    try {
+      const response = await axios.get('/api/categories')
+      setCategories(response.data)
+    } catch (error) {
+      console.error('Error fetching articles:', error)
+    }
+  }
 
   useEffect(() => {
-    const fetchArticles = async () => {
-      try {
-        const response = await axios.get('/api/articles')
-        setArticles(response.data)
-      } catch (error) {
-        console.error('Error fetching articles:', error)
-      }
-    }
-
     fetchArticles()
+    fetchCategories()
   }, [])
+
+  const handleDataRefresh = () => {
+    fetchArticles()
+  }
 
   return (
     <div className='w-screen h-[100dvh] flex justify-center'>
@@ -39,6 +54,7 @@ export default function Blog() {
                   content={item.content}
                   coverImage={item.coverImage}
                   id={item.id}
+                  onRefresh={handleDataRefresh}
                 />
                 {Number(index) !== articles.length - 1 && (
                   <div className='border-t w-full my-[20px]'></div>
@@ -48,7 +64,7 @@ export default function Blog() {
           </SessionProviderWrapper>
         </div>
         <div className='w-[30%] h-full relative '>
-          <RightList />
+          <RightList categories={categories} />
         </div>
       </div>
     </div>

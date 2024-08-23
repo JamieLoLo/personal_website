@@ -2,7 +2,6 @@
 
 import { isMobile } from 'react-device-detect'
 import { useSession, signOut } from 'next-auth/react'
-import { useEffect } from 'react'
 import { FaPowerOff, FaPencil } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
 
