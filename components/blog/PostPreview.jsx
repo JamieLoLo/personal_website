@@ -5,8 +5,9 @@ import { useSession } from 'next-auth/react'
 import { isMobile } from 'react-device-detect'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
+import { deleteHandler } from '@/lib/articleHandler'
 
-export default function PostPreview({ title, content, id }) {
+export default function PostPreview({ title, content, id, onRefresh }) {
   const dots = Array(3).fill(null)
   const router = useRouter()
   const { data: session } = useSession()
@@ -32,11 +33,21 @@ export default function PostPreview({ title, content, id }) {
         >
           <p className='NotoSansB text-[35px] text-textBlack-100'>Delete?</p>
           <div className='flex gap-[20px] NotoSansR'>
-            <button className='bg-red-500 px-[10px] py-[5px] text-white rounded-[5px]'>
+            <button
+              className={`bg-red-500 px-[10px] py-[5px] text-white rounded-[5px] ${
+                !isMobile && 'hover:scale-[1.05]'
+              }`}
+              onClick={() => {
+                deleteHandler(id, router, onRefresh)
+                setShowDeleteConfirmBtn(false)
+              }}
+            >
               Delete
             </button>
             <button
-              className='bg-green-500 px-[10px] py-[5px] text-white rounded-[5px]'
+              className={`bg-green-500 px-[10px] py-[5px] text-white rounded-[5px] ${
+                !isMobile && 'hover:scale-[1.05]'
+              }`}
               onClick={() => {
                 setShowDeleteConfirmBtn(false)
               }}
@@ -49,7 +60,7 @@ export default function PostPreview({ title, content, id }) {
 
       {session && session.user.name === 'Jamie' && (
         <div
-          className='absolute top-0 right-0 p-[5px] flex gap-[3px] cursor-pointer z-10 text-textBlack-100'
+          className='absolute top-0 right-0 p-[5px] flex gap-[2px] cursor-pointer z-10 text-textBlack-100'
           onClick={(e) => {
             e.stopPropagation()
             setShowList(!showList)
@@ -58,7 +69,7 @@ export default function PostPreview({ title, content, id }) {
           {dots.map((_, index) => (
             <div
               key={`select_dot_${index}`}
-              className='w-[5px] h-[5px] rounded-[50%] bg-mainGrey-100'
+              className='w-[4px] h-[4px] rounded-[50%] bg-mainGrey-100'
             ></div>
           ))}
           {showList && (
