@@ -13,6 +13,7 @@ import { GoArrowLeft } from 'react-icons/go'
 // react-select 會在初始化生成動態id或狀態，會與伺服器預渲染產生衝突，下面的設置為跳過伺服器預渲染的步驟。
 import dynamic from 'next/dynamic'
 import axios from 'axios'
+import { toastHandler } from '@/lib/valtio'
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export default function Create() {
@@ -118,14 +119,9 @@ export default function Create() {
       try {
         const url = await uploadToS3(file)
         const textarea = document.querySelector('textarea')
-        textarea.value += `<div className='relative w-full'>
-            <Image
-              src='${url}'
-              alt='logo'
-              layout='fill'
-              className='w-fullobject-contain'
-            />
-          </div>`
+        if (url) {
+          textarea.value += `<Image src='${url}' alt='內文圖片' layout='fill' className='w-full object-contain' />`
+        }
       } catch (error) {
         console.error('Upload failed:', error)
       }
@@ -148,19 +144,24 @@ export default function Create() {
     }
 
     try {
-      const response = await axios.post('/api/create', {
+      const response = await axios.post('/api/articles', {
         title,
         content,
         coverImage,
         categoryId: category,
       })
-
       if (response.status === 201) {
         goBlogPage()
+        toastHandler('success', 'success')
       }
     } catch (error) {
-      console.error('Failed to publish article:', error)
-      alert('Failed to publish article. Please try again.')
+      console.log(error)
+      if (error.response) {
+        console.error('Error:', error.response.data.error)
+        return toastHandler(error.response.data.error, 'error')
+      } else {
+        console.error('An unexpected error occurred:', error.message)
+      }
     }
   }
 
