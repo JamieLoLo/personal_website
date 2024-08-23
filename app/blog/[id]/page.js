@@ -3,7 +3,6 @@
 import Nav from '@/components/blog/Nav'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import axios from 'axios'
-import Image from 'next/image'
 import { useRouter, usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
@@ -18,7 +17,7 @@ export default function BlogPostPage() {
   useEffect(() => {
     const fetchArticle = async (id) => {
       try {
-        const response = await axios.get(`/api/article/${id}`)
+        const response = await axios.get(`/api/articles/${id}`)
         setArticle(response.data)
       } catch (error) {
         console.error('Error fetching article:', error)
