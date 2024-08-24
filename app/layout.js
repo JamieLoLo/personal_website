@@ -1,6 +1,7 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
 import Toast from '@/components/Toast'
+import ConfirmModal from '@/components/blog/ConfirmModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -15,6 +16,7 @@ export default function RootLayout({ children }) {
       <body className='NotoSansR select-none'>
         {children}
         <Toast />
+        <ConfirmModal />
       </body>
     </html>
   )
