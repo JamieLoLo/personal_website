@@ -5,16 +5,14 @@ import { useSession } from 'next-auth/react'
 import { isMobile } from 'react-device-detect'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
-import { deleteHandler } from '@/lib/articleHandler'
+import { uiState } from '@/lib/valtio'
 
 export default function PostPreview({ title, content, id, onRefresh }) {
-  const dots = Array(3).fill(null)
+  const [showList, setShowList] = useState(false)
   const router = useRouter()
   const { data: session } = useSession()
 
-  const [showList, setShowList] = useState(false)
-  const [showDeleteConfirmBtn, setShowDeleteConfirmBtn] = useState(false)
-
+  const dots = Array(3).fill(null)
   const previewContent =
     content.length > 30 ? content.slice(0, 30) + '...' : content
 
@@ -24,40 +22,6 @@ export default function PostPreview({ title, content, id, onRefresh }) {
 
   return (
     <div className='w-full flex cursor-pointer relative' onClick={handleClick}>
-      {showDeleteConfirmBtn && (
-        <div
-          className='fixed z-20 top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] h-[200px]  bg-white shadow-[rgba(0,0,15,0.1)_0px_0px_10px_0px] rounded-[5px] flex flex-col justify-center gap-[25px] items-center'
-          onClick={(e) => {
-            e.stopPropagation()
-          }}
-        >
-          <p className='NotoSansM text-[35px] text-textBlack-100'>Delete?</p>
-          <div className='flex gap-[20px] NotoSansR'>
-            <button
-              className={`bg-red-500 px-[10px] py-[5px] text-white rounded-[5px] ${
-                !isMobile && 'hover:scale-[1.05]'
-              }`}
-              onClick={() => {
-                deleteHandler(id, router, onRefresh)
-                setShowDeleteConfirmBtn(false)
-              }}
-            >
-              Delete
-            </button>
-            <button
-              className={`bg-green-500 px-[10px] py-[5px] text-white rounded-[5px] ${
-                !isMobile && 'hover:scale-[1.05]'
-              }`}
-              onClick={() => {
-                setShowDeleteConfirmBtn(false)
-              }}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
       {session && session.user.name === 'Jamie' && (
         <div
           className='absolute top-0 right-0 p-[5px] flex gap-[2px] cursor-pointer z-10 text-textBlack-100'
@@ -92,7 +56,10 @@ export default function PostPreview({ title, content, id, onRefresh }) {
                 onClick={(e) => {
                   e.stopPropagation()
                   setShowList(false)
-                  setShowDeleteConfirmBtn(true)
+                  uiState.confirmModal.confirmVisible = true
+                  uiState.confirmModal.id = id
+                  uiState.confirmModal.api = '/api/articles'
+                  uiState.confirmModal.onRefresh = onRefresh
                 }}
               >
                 Delete
@@ -104,12 +71,12 @@ export default function PostPreview({ title, content, id, onRefresh }) {
 
       <div className='w-[75%]'>
         <p className='text-[24px] NotoSansM'>{title}</p>
-
         <ReactMarkdown
           className='text-[16px] text-mainGrey-100 py-[16px] whitespace-pre-wrap text-justify'
-          children={previewContent}
           rehypePlugins={[rehypeRaw]}
-        />
+        >
+          {previewContent}
+        </ReactMarkdown>
         <p className='text-[13px] text-mainGrey-100 mt-[20px]'>MAR 5, 2024</p>
       </div>
       <div className='w-[25%] relative ml-[8%] '>
