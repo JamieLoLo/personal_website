@@ -9,39 +9,36 @@ import { FaEye } from 'react-icons/fa'
 import { PiSquareSplitHorizontal } from 'react-icons/pi'
 import { MdOutlineChangeCircle } from 'react-icons/md'
 import { GoArrowLeft } from 'react-icons/go'
+import axios from 'axios'
+import { toastHandler, uiState } from '@/lib/valtio'
+import { useSnapshot } from 'valtio'
 
 // react-select 會在初始化生成動態id或狀態，會與伺服器預渲染產生衝突，下面的設置為跳過伺服器預渲染的步驟。
 import dynamic from 'next/dynamic'
-import axios from 'axios'
-import { toastHandler } from '@/lib/valtio'
+import { getAllHandler } from '@/lib/axiosHandler'
 const Select = dynamic(() => import('react-select'), { ssr: false })
 
 export default function Create() {
+  const { categories } = useSnapshot(uiState)
   const [title, setTitle] = useState('')
   const [coverImage, setCoverImage] = useState('')
   const [activeTopInput, setActiveTopInput] = useState('title') // title, cover
   const [content, setContent] = useState('')
   const [mode, setMode] = useState('edit') // edit, preview
   const [category, setCategory] = useState([])
-  const [categories, setCategories] = useState([])
   const router = useRouter()
 
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get('/api/categories')
-        setCategories(response.data)
-      } catch (error) {
-        console.error('Error fetching categories:', error)
-      }
+    const fetchCategories = () => {
+      getAllHandler('/api/categories', 'categories')
     }
 
     fetchCategories()
   }, [])
 
   const options =
-    categories &&
-    categories.map((el) => ({
+    categories.data &&
+    categories.data.map((el) => ({
       value: el.id,
       label: el.name,
     }))
@@ -120,7 +117,7 @@ export default function Create() {
         const url = await uploadToS3(file)
         const textarea = document.querySelector('textarea')
         if (url) {
-          textarea.value += `<Image src='${url}' alt='內文圖片' layout='fill' className='w-full object-contain' />`
+          textarea.value += `<div className='relative w-full h-full'><Image src='${url}' alt='內文圖片' layout='fill' className='w-full object-contain' /></div>`
         }
       } catch (error) {
         console.error('Upload failed:', error)
@@ -139,7 +136,7 @@ export default function Create() {
     }
 
     if (!category || category.length === 0) {
-      let target = categories.find((el) => el.name === '未分類')
+      let target = categories.data.find((el) => el.name === '未分類')
       setCategory(target.id)
     }
 
