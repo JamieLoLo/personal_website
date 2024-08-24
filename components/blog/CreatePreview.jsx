@@ -8,7 +8,7 @@ export default function CreatePreview({ content, mode }) {
         mode === 'preview' ? 'w-[700px]' : 'w-full'
       }`}
     >
-      <ReactMarkdown children={content} rehypePlugins={[rehypeRaw]} />
+      <ReactMarkdown rehypePlugins={[rehypeRaw]}>{content}</ReactMarkdown>
     </div>
   )
 }
