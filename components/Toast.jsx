@@ -5,11 +5,11 @@ import { uiState } from '@/lib/valtio'
 import { useSnapshot } from 'valtio'
 
 export default function Toast() {
-  const { visible, message, status } = useSnapshot(uiState.toast)
+  const { toastVisible, message, status } = useSnapshot(uiState.toast)
 
   return (
     <AnimatePresence>
-      {visible && (
+      {toastVisible && (
         <motion.p
           className={`fixed bottom-[20px] left-[20px] text-white flex ${
             status === 'success' ? 'bg-green-500' : 'bg-red-500'
