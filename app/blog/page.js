@@ -5,7 +5,7 @@ import PostPreview from '@/components/blog/PostPreview'
 import RightList from '@/components/blog/RightList'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import { getAllHandler } from '@/lib/axiosHandler'
-import { uiState } from '@/lib/valtio'
+import { uiState } from '@/lib/valtioState'
 import { useEffect } from 'react'
 import { useSnapshot } from 'valtio'
 

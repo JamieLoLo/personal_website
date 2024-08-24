@@ -11,7 +11,7 @@ import Image from 'next/image'
 import ConfirmModal from './ConfirmModal'
 import { deleteHandler, getAllHandler } from '@/lib/axiosHandler'
 import { useSnapshot } from 'valtio'
-import { uiState } from '@/lib/valtio'
+import { uiState } from '@/lib/valtioState'
 
 export default function CategoryEditPage() {
   const { data: session } = useSession()

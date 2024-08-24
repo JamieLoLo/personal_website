@@ -1,7 +1,7 @@
 'use client'
 
 import { AnimatePresence, motion } from 'framer-motion'
-import { uiState } from '@/lib/valtio'
+import { uiState } from '@/lib/valtioState'
 import { useSnapshot } from 'valtio'
 
 export default function Toast() {

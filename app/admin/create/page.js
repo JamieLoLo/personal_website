@@ -10,7 +10,7 @@ import { PiSquareSplitHorizontal } from 'react-icons/pi'
 import { MdOutlineChangeCircle } from 'react-icons/md'
 import { GoArrowLeft } from 'react-icons/go'
 import axios from 'axios'
-import { toastHandler, uiState } from '@/lib/valtio'
+import { toastHandler, uiState } from '@/lib/vatioAction'
 import { useSnapshot } from 'valtio'
 
 // react-select 會在初始化生成動態id或狀態，會與伺服器預渲染產生衝突，下面的設置為跳過伺服器預渲染的步驟。

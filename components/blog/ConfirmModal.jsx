@@ -1,9 +1,8 @@
 'use client'
 
-import { uiState } from '@/lib/valtio'
+import { uiState } from '@/lib/valtioState'
 import { isMobile } from 'react-device-detect'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useEffect } from 'react'
 import { useSnapshot } from 'valtio'
 import { deleteHandler } from '@/lib/axiosHandler'
 

@@ -3,7 +3,7 @@
 import Nav from '@/components/blog/Nav'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import { getOneHandler } from '@/lib/axiosHandler'
-import { uiState } from '@/lib/valtio'
+import { uiState } from '@/lib/valtioState'
 import { usePathname } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import ReactMarkdown from 'react-markdown'

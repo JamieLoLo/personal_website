@@ -5,7 +5,7 @@ import { useSession } from 'next-auth/react'
 import { isMobile } from 'react-device-detect'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
-import { uiState } from '@/lib/valtio'
+import { uiState } from '@/lib/valtioState'
 
 export default function PostPreview({ title, content, id, onRefresh }) {
   const [showList, setShowList] = useState(false)
