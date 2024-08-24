@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import SessionProviderWrapper from './SessionProviderWrapper'
-import CategoryItem from './CategoryItem'
+import CategoryList from './CategoryList'
 
 export default function RightList({ categories }) {
   return (
@@ -8,7 +8,7 @@ export default function RightList({ categories }) {
       <div className='w-[90px] h-[90px] relative '>
         <Image
           src='/images/avatar.jpg'
-          alt='logo'
+          alt='avatar'
           fill
           sizes='(max-width: 768px) 90px, (max-width: 1200px) 90px, 90px'
           className='object-cover rounded-[50%]'
@@ -23,18 +23,9 @@ export default function RightList({ categories }) {
         💪
       </p>
       <div className=' mt-[40px]  '>
-        <p className='NotoSansM text-[15px]'>文章分類</p>
-        <div className='mt-[8px]'>
-          <SessionProviderWrapper>
-            {categories.map((item, index) => (
-              <CategoryItem
-                key={`categoryItem_${index}`}
-                item={item}
-                categories={categories}
-              />
-            ))}
-          </SessionProviderWrapper>
-        </div>
+        <SessionProviderWrapper>
+          <CategoryList categories={categories} />
+        </SessionProviderWrapper>
       </div>
     </div>
   )
