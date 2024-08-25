@@ -96,13 +96,6 @@ html {
   font-style: normal;
 }
 
-/* 主頁背景 */
-.main {
-  background-image: url('/images/XRtS.gif');
-  width: 100vw;
-  height: 100dvh;
-}
-
 textarea {
   resize: none;
 }
