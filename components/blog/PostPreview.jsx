@@ -95,12 +95,13 @@ export default function PostPreview({ title, content, id, onRefresh, index }) {
         </ReactMarkdown>
         <p className='text-[13px] text-mainGrey-100 mt-[20px]'>MAR 5, 2024</p>
       </div>
-      <div className='w-[25%] relative ml-[8%] '>
+      <div className='flex items-end ml-[50px]'>
         <Image
           src='/images/test.webp'
           alt='logo'
-          fill
-          className='w-full object-contain '
+          width={200}
+          height={100}
+          className='object-contain  '
         />
       </div>
     </div>
