@@ -8,6 +8,7 @@ import { getAllHandler } from '@/lib/axiosHandler'
 import { uiState } from '@/lib/valtioState'
 import { useEffect } from 'react'
 import { useSnapshot } from 'valtio'
+import { motion } from 'framer-motion'
 
 export default function Blog() {
   const { articles, categories } = useSnapshot(uiState)
@@ -29,8 +30,23 @@ export default function Blog() {
     fetchArticles()
   }
 
+  useEffect(() => {
+    if (articles.data.length === 0 || categories.data.length === 0) {
+      uiState.loading.loadingVisible = true
+    } else {
+      setTimeout(() => {
+        uiState.loading.loadingVisible = false
+      }, 1000)
+    }
+  }, [articles.data, categories.data])
+
   return (
-    <div className='w-screen h-[100dvh] flex justify-center'>
+    <motion.div
+      className='w-screen h-[100dvh] flex justify-center'
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <SessionProviderWrapper>
         <Nav />
       </SessionProviderWrapper>
@@ -59,6 +75,6 @@ export default function Blog() {
           <RightList categories={categories.data} />
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }

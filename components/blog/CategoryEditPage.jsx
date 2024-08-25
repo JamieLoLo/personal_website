@@ -42,20 +42,15 @@ export default function CategoryEditPage() {
     fetchCategories()
   }
 
-  if (!isMounted || categories.data.length === 0) {
-    return (
-      <div className='w-screen h-[100dvh] flex justify-center items-center'>
-        <Image
-          src='/images/loading.gif'
-          alt='loading icon'
-          width={90}
-          height={90}
-          className='object-cover'
-          priority
-        />
-      </div>
-    )
-  }
+  useEffect(() => {
+    if (!isMounted || categories.data.length === 0) {
+      uiState.loading.loadingVisible = true
+    } else {
+      setTimeout(() => {
+        uiState.loading.loadingVisible = false
+      }, 1000)
+    }
+  }, [isMounted, categories.data])
 
   const createHandler = async () => {
     if (!name) {

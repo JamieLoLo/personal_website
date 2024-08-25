@@ -2,6 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Toast from '@/components/Toast'
 import ConfirmModal from '@/components/blog/ConfirmModal'
+import Loading from '@/components/Loading'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
         {children}
         <Toast />
         <ConfirmModal />
+        <Loading />
       </body>
     </html>
   )
