@@ -1,6 +1,6 @@
 import Image from 'next/image'
-import SessionProviderWrapper from './SessionProviderWrapper'
 import CategoryList from './CategoryList'
+import SessionProviderWrapper from './SessionProviderWrapper'
 
 export default function RightList({ categories }) {
   return (
