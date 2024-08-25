@@ -1,7 +1,7 @@
 import { isMobile } from 'react-device-detect'
 import { FaPencil } from 'react-icons/fa6'
-import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 
 export default function CategoryList({ categories }) {
   const { data: session } = useSession()
