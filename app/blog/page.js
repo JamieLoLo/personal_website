@@ -41,6 +41,7 @@ export default function Blog() {
               articles.data.map((item, index) => (
                 <div key={item.id} className='w-full '>
                   <PostPreview
+                    index={index}
                     title={item.title}
                     content={item.content}
                     coverImage={item.coverImage}
