@@ -1,9 +1,10 @@
 'use client'
 
 import { isMobile } from 'react-device-detect'
-import { useSession, signOut } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import { FaPowerOff, FaPencil } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
+import { uiState } from '@/lib/valtioState'
 
 export default function Nav() {
   const { data: session } = useSession()
@@ -13,7 +14,8 @@ export default function Nav() {
     router.push(`/blog`)
   }
   const goCreate = () => {
-    router.push(`/admin/create`)
+    uiState.adminArticle.actionMode = 'create'
+    router.push(`/admin/article`)
   }
 
   return (
