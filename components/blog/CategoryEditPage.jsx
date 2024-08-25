@@ -1,21 +1,25 @@
 'use client'
 
 import { isMobile } from 'react-device-detect'
-import { motion } from 'framer-motion'
+import { m, motion } from 'framer-motion'
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6'
-import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-import axios from 'axios'
 import Nav from './Nav'
 import Image from 'next/image'
-import ConfirmModal from './ConfirmModal'
-import { deleteHandler, getAllHandler } from '@/lib/axiosHandler'
+import { getAllHandler } from '@/lib/axiosHandler'
 import { useSnapshot } from 'valtio'
 import { uiState } from '@/lib/valtioState'
+import axios from 'axios'
+import { toastHandler } from '@/lib/valtioAction'
+import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
+import { useSession } from 'next-auth/react'
 
 export default function CategoryEditPage() {
   const { data: session } = useSession()
+  const [id, setId] = useState(null)
+  const [name, setName] = useState('')
   const [isMounted, setIsMounted] = useState(false)
+  const [mode, setMode] = useState('create')
   const { categories } = useSnapshot(uiState)
 
   useEffect(() => {
@@ -47,28 +51,104 @@ export default function CategoryEditPage() {
           width={90}
           height={90}
           className='object-cover'
+          priority
         />
       </div>
     )
   }
 
+  const createHandler = async () => {
+    if (!name) {
+      alert('Name is required!')
+      return
+    }
+
+    try {
+      const response = await axios.post('/api/categories', {
+        name,
+      })
+      if (response.status === 201) {
+        toastHandler('success', 'success')
+        fetchCategories()
+        setName('')
+      }
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+        console.error('Error:', error.response.data.error)
+        return toastHandler(error.response.data.error, 'error')
+      } else {
+        console.error('An unexpected error occurred:', error.message)
+      }
+    }
+  }
+
+  const uploadHandler = async () => {
+    if (!name) {
+      alert('Name is required!')
+      return
+    }
+
+    try {
+      const response = await axios.put(`/api/categories/${id}`, {
+        name,
+      })
+      if (response.status === 201) {
+        toastHandler('success', 'success')
+        fetchCategories()
+        setName('')
+        setId(null)
+        setMode('create')
+      }
+    } catch (error) {
+      console.log(error)
+      if (error.response) {
+        console.error('Error:', error.response.data.error)
+        return toastHandler(error.response.data.error, 'error')
+      } else {
+        console.error('An unexpected error occurred:', error.message)
+      }
+    }
+  }
+
   return (
     <motion.div className='w-screen h-[100dvh] flex justify-center items-start'>
-      <Nav />
+      <SessionProviderWrapper>
+        <Nav />
+      </SessionProviderWrapper>
       <div className='my-[100px] flex flex-col items-center'>
-        <p className='text-[30px] mb-[40px] EB-GaramondM'>All Categories</p>
+        <p className='text-[30px] EB-GaramondM'>All Categories</p>
+        <div className='flex my-[30px]'>
+          <input
+            type='text'
+            className='border mr-4 focus:outline-none px-[5px] rounded-[5px]'
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+          <button
+            className={` text-white px-[20px] py-[5px] rounded-[5px] text-[14px] EB-GaramondM ${
+              isMobile ? 'bg-mainGrey-100' : 'bg-mainGrey-100/85'
+            } ${!isMobile && 'hover:scale-[1.05] hover:bg-mainGrey-100'}`}
+            onClick={() => {
+              if (mode === 'create') {
+                createHandler()
+              }
+              if (mode === 'update') {
+                uploadHandler()
+              }
+            }}
+          >
+            {mode === 'create' ? 'Create' : 'Update'}
+          </button>
+        </div>
         <table className='text-[18px] '>
-          <thead className='EB-GaramondB'>
-            <tr className=''>
-              <th className='text-left'>id</th>
-              <th className='text-left'>name</th>
-            </tr>
-          </thead>
           <tbody className='EB-GaramondR'>
             {categories.data &&
               categories.data.map((category, index) => (
-                <tr key={`category${index}`}>
-                  <td className='pr-[60px] '>{category.id}</td>
+                <tr
+                  key={`category${index}`}
+                  className=' flex items-center justify-between'
+                >
                   <td className='pr-[60px] '>{category.name}</td>
                   <td className='flex gap-[30px]'>
                     <FaPencil
@@ -78,6 +158,11 @@ export default function CategoryEditPage() {
                         !isMobile &&
                         'hover:scale-[1.05] hover:text-mainGrey-100'
                       }`}
+                      onClick={() => {
+                        setId(category.id)
+                        setMode('update')
+                        setName(category.name)
+                      }}
                     />
                     <FaRegTrashCan
                       className={`text-[16px] ml-[16px] cursor-pointer  translate-y-[1px] ${
