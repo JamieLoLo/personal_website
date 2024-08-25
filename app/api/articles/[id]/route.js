@@ -20,6 +20,31 @@ export async function GET(req, { params }) {
   }
 }
 
+export async function PUT(req, { params }) {
+  // 驗證管理者身份
+  const authResult = await requireAdminSession()
+  if (authResult.status !== 200) {
+    return NextResponse.json({ error: authResult.error }, { status: 401 })
+  }
+
+  const { title, content, coverImage, categoryId } = await req.json()
+
+  try {
+    const article = await Article.findByPk(params.id)
+    if (!article) {
+      return NextResponse.json({ error: 'Article not found' }, { status: 404 })
+    }
+    article.update({ title, content, coverImage, categoryId })
+    return NextResponse.json(article, { status: 201 })
+  } catch (error) {
+    console.error('Error fetching upload article:', error)
+    return NextResponse.json(
+      { error: 'Failed to upload article' },
+      { status: 500 }
+    )
+  }
+}
+
 export async function DELETE(req, { params }) {
   // 驗證管理者身份
   const authResult = await requireAdminSession()
