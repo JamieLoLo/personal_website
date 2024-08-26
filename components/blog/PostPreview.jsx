@@ -26,7 +26,7 @@ export default function PostPreview({ title, content, id, onRefresh, index }) {
   }
 
   const goEdit = () => {
-    uiState.adminArticle.actionMode = 'edit'
+    uiState.adminArticle.actionMode = 'update'
     getOneHandler('/api/articles', id, 'article')
     router.push(`/admin/article`)
   }
@@ -36,7 +36,7 @@ export default function PostPreview({ title, content, id, onRefresh, index }) {
       className='w-full flex cursor-pointer relative'
       onClick={goSingleArticle}
     >
-      {session && session.user.name === 'Jamie' && (
+      {session && (
         <div
           className='absolute top-0 right-0 p-[5px] flex gap-[2px] cursor-pointer z-10 text-textBlack-100'
           onClick={(e) => {
