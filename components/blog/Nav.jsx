@@ -12,6 +12,7 @@ export default function Nav() {
 
   const goBlogPage = () => {
     router.push(`/blog`)
+    uiState.article.data = {}
   }
   const goCreate = () => {
     uiState.adminArticle.actionMode = 'create'
@@ -36,7 +37,7 @@ export default function Nav() {
         >
           GO HOME
         </a>
-        {session && session.user.name === 'Jamie' && (
+        {session && (
           <FaPencil
             className={`text-[26px] cursor-pointer  ${
               isMobile ? 'text-mainGrey-100' : 'text-mainGrey-100/85'
@@ -44,7 +45,7 @@ export default function Nav() {
             onClick={goCreate}
           />
         )}
-        {session && session.user.name === 'Jamie' && (
+        {session && (
           <FaPowerOff
             className={`text-[26px] cursor-pointer  ${
               isMobile ? 'text-mainGrey-100' : 'text-mainGrey-100/85'
