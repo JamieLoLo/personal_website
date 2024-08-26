@@ -5,6 +5,7 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as THREE from 'three'
 import { useRouter } from 'next/navigation'
 import { uiState } from '@/lib/valtioState'
+import ProjectInfo from './ProjectInfo'
 
 const fileUrl = '/model/Cube.glb'
 
@@ -174,6 +175,7 @@ export default function CubeModel() {
         <OrbitControls enableZoom={false} enablePan={false} />
         <MeshComponent />
       </Canvas>
+      <ProjectInfo />
     </div>
   )
 }
