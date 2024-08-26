@@ -2,7 +2,8 @@
 
 export const projectInfoData = {
   breeze: {
-    title: '當我們望春風：臺灣流行音樂90年特展',
+    title: `當我們望春風：
+臺灣流行音樂90年特展`,
     link: 'https://vr.nmth.gov.tw/lookingforwardtospring/',
     img: 'breeze.jpg',
     museum: '國立臺灣歷史博物館',
@@ -14,7 +15,8 @@ export const projectInfoData = {
 這麼多的〈望春風〉齊聚一堂，在你面前展開的，是一條臺灣流行音樂的長河，也會讓你聽到，這島嶼上來來去去的人們，對現在與未來，曾經有過怎麼樣的慾念和想像。`,
   },
   fortune: {
-    title: '《好運連連－財神與蒙藏生活藝術之美》特展',
+    title: `好運連連－
+財神與蒙藏生活藝術之美特展`,
     link: 'https://vrmtcc.moc.gov.tw/endlessfortune/',
     img: 'fortune.jpg',
     museum: '蒙藏文化中心',
@@ -32,28 +34,15 @@ export const projectInfoData = {
     link: 'https://vr.nmth.gov.tw/CzechTraveler/',
     img: 'czech.jpg',
     museum: '國立臺灣歷史博物館',
-    jd: `所有 UI 介面切版，包含首頁、一般環景。
+    jd: `所有 UI 介面切版，包含首頁、一般環景、互動小遊戲。
 編寫控制環景邏輯，編寫環景穿梭功能套件供設計師使用。
 控制場內所有互動元素的顯示與隱藏。`,
     intro: `一次大戰結束後，世界興起民族自決風潮，臺灣也開啟反殖民的政治社會運動，正值臺灣反殖運動熱潮尾端，一個來自一戰後新興國家捷克斯洛伐克的世界旅行家卜吉比索爾，橫跨歐亞大陸，於1929年來到臺灣，見證了殖民政府的言論自由管制，無法自由攝影與行動。
 在這種種被限制的背景下，他提出了對於殖民地臺灣的外人觀察，同時也結識了臺灣政治社會運動家蔣渭水跟推行世界語的臺灣同志，當時的臺灣與捷克同屬世界弱小民族，為了對抗強權而展開了短暫但意味深長的交流。`,
   },
   ukrainian: {
-    title: `當戰時成為日常：烏克蘭女性的第_/_天`,
-    link: 'https://vr360.nhrm.gov.tw/UkraineWar/',
-    img: 'ukrainian.jpg',
-    museum: '國家人權博物館',
-    jd: `所有 UI 介面切版，包含首頁、一般環景。
-編寫控制環景邏輯。
-控制場內所有互動元素的顯示與隱藏。`,
-    intro: `2022年2月24日，俄羅斯對烏克蘭發動無異於戰爭的「特別軍事行動」，爆發二次世界大戰以來歐洲最大規模的軍事衝突。
-
-此波行動的導火線雖是因烏克蘭欲入北約而起，但實質可溯自2014年克里米亞「公投」入俄和俄國支援烏東分離運動。
-
-2022年大規模軍事衝突爆發後，烏克蘭人展現了全世界都未能預料的持久耐力；而這場原被認為可能很快結束的戰爭，至今已成為烏克蘭人必須適應的日常生活。`,
-  },
-  ukrainian: {
-    title: `當戰時成為日常：烏克蘭女性的第_/_天`,
+    title: `當戰時成為日常：
+烏克蘭女性的第_/_天`,
     link: 'https://vr360.nhrm.gov.tw/UkraineWar/',
     img: 'ukrainian.jpg',
     museum: '國家人權博物館',
@@ -81,3 +70,36 @@ export const projectInfoData = {
 傾聽與迴聲本為相生的態勢，裂隙的聲音是來自歷史的陷落，抑或至今仍讓大眾難掩不安的傷口？裂隙暗處的嗚鳴聲從來都不只是單一的波動，而是涵納於數萬人的生命經歷。在臺灣極具特色的歷史進程中，威權的代表未被明確地指出為加害者，而彼時的黨國集團在實體與精神上的遺緒，不僅從未失去民意支持，甚至仍掌控著政治與經濟權力。我們要如何讓在白色恐怖這段時間裡，順應體制過著生活，或在當中獲取利益—相較於受迫害者的多數社會—的群體，了解那段歷史與制度的不公義呢？而在這段歷史最具代表性場域之一的綠島，它的文化與故事又是如何被忽略了呢？「傾聽裂隙的迴聲」以三個子題串連白色恐怖、當代的反思與綠島和人權，希望透過當代藝術拉開與歷史的距離，透過藝術傾聽裂隙裡頭以及另一頭的聲音，在面對複雜且充滿歧異的歷史時，提供觀眾更多想像、思考以及接近的路徑，共同建構這段歷史對於當下的意義。`,
   },
 }
+
+export const modelData = [
+  {
+    id: 'czech',
+    name: 'Cube001_1',
+    texture: '/model/texture/czechTexture.jpg',
+  },
+  {
+    id: 'ukrainian',
+    name: 'Cube001_2',
+    texture: '/model/texture/ukrainianTexture.jpg',
+  },
+  {
+    id: 'breeze',
+    name: 'Cube001_3',
+    texture: '/model/texture/breezeTexture.jpg',
+  },
+  {
+    id: 'gihraf',
+    name: 'Cube001_4',
+    texture: '/model/texture/gihrafTexture.JPG',
+  },
+  {
+    id: 'fortune',
+    name: 'Cube001_5',
+    texture: '/model/texture/fortuneTexture.jpg',
+  },
+  {
+    id: 'goBlog',
+    name: 'Cube001_6',
+    texture: '/model/texture/goBlogTexture.jpg',
+  },
+]
