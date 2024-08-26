@@ -6,17 +6,21 @@ import * as THREE from 'three'
 import { useRouter } from 'next/navigation'
 import { uiState } from '@/lib/valtioState'
 import ProjectInfo from './ProjectInfo'
+import { modelData } from '@/database/projectInfoData'
+import { useSnapshot } from 'valtio'
+import { windowSizeState } from '@/lib/windowSize'
 
 const fileUrl = '/model/Cube.glb'
 
 const MeshComponent = forwardRef((props, ref) => {
   const gltf = useLoader(GLTFLoader, fileUrl)
   const { scene, camera } = useThree()
-  const [isLoaded, setIsLoaded] = useState(false)
   const initialClickPosition = useRef({ x: 0, y: 0 })
   const router = useRouter()
   const raycaster = useRef(new THREE.Raycaster())
   const mouse = useRef(new THREE.Vector2())
+  const [isLoaded, setIsLoaded] = useState(false)
+  const { mobileMode } = useSnapshot(windowSizeState)
 
   useEffect(() => {
     if (!isLoaded) {
@@ -35,15 +39,6 @@ const MeshComponent = forwardRef((props, ref) => {
     }
 
     const nodes = gltf.nodes
-
-    const modelData = [
-      { name: 'Cube001_1', texture: '/model/texture/czechTexture.jpg' },
-      { name: 'Cube001_2', texture: '/model/texture/ukrainianTexture.jpg' },
-      { name: 'Cube001_3', texture: '/model/texture/breezeTexture.jpg' },
-      { name: 'Cube001_4', texture: '/model/texture/gihrafTexture.JPG' },
-      { name: 'Cube001_5', texture: '/model/texture/fortuneTexture.jpg' },
-      { name: 'Cube001_6', texture: '/model/texture/goBlogTexture.jpg' },
-    ]
 
     modelData.forEach((item) => {
       if (nodes && nodes[item.name]) {
@@ -65,6 +60,14 @@ const MeshComponent = forwardRef((props, ref) => {
         } else {
           material.opacity = 0.9
           material.transparent = true
+          nodes[item.name].userData = {
+            onClick: () => {
+              uiState.projectInfo.activeProject = item.id
+              setTimeout(() => {
+                uiState.projectInfo.visible = true
+              }, 200)
+            },
+          }
         }
         material.side = THREE.DoubleSide
         material.needsUpdate = true
@@ -158,7 +161,11 @@ const MeshComponent = forwardRef((props, ref) => {
 
   return (
     <>
-      <mesh ref={ref} scale={1.6} rotation={[0, Math.PI / 4, 0]}>
+      <mesh
+        ref={ref}
+        scale={mobileMode ? 1.2 : 1.6}
+        rotation={[0, Math.PI / 4, 0]}
+      >
         <primitive object={gltf.scene} />
       </mesh>
     </>
