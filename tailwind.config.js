@@ -27,6 +27,9 @@ module.exports = {
         textBlack: {
           100: '#242424',
         },
+        infoBg: {
+          100: '#E1E1DB',
+        },
       },
     },
     screens: {
