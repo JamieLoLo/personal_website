@@ -9,6 +9,7 @@ import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import { useSnapshot } from 'valtio'
+import { motion } from 'framer-motion'
 
 export default function BlogPostPage() {
   const { article } = useSnapshot(uiState)
@@ -22,8 +23,23 @@ export default function BlogPostPage() {
     fetchArticle()
   }, [])
 
+  useEffect(() => {
+    if (!article.data || article.data.length === 0) {
+      uiState.loading.loadingVisible = true
+    } else {
+      setTimeout(() => {
+        uiState.loading.loadingVisible = false
+      }, 1000)
+    }
+  }, [article.data])
+
   return (
-    <div className='w-screen h-[100dvh] flex justify-center relative overflow-y-scroll overscroll-none '>
+    <motion.div
+      className='w-screen h-[100dvh] flex justify-center relative overflow-y-scroll overscroll-none '
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <SessionProviderWrapper>
         <Nav />
       </SessionProviderWrapper>
@@ -54,6 +70,6 @@ export default function BlogPostPage() {
           {article.data.content}
         </ReactMarkdown>
       </div>
-    </div>
+    </motion.div>
   )
 }
