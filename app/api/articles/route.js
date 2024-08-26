@@ -10,7 +10,19 @@ const Article = initArticleModel(sequelize, DataTypes)
 export async function GET() {
   try {
     const articles = await Article.findAll()
-    return NextResponse.json(articles)
+
+    // 格式化日期
+    const formattedArticles = articles.map((article) => {
+      const date = new Date(article.createdAt)
+      const options = { year: 'numeric', month: 'short', day: 'numeric' }
+      article.dataValues.createdAt = new Intl.DateTimeFormat(
+        'en-US',
+        options
+      ).format(date)
+      return article
+    })
+
+    return NextResponse.json(formattedArticles)
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch articles' },

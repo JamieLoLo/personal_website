@@ -1,8 +1,9 @@
+import initArticleModel from '../../../../models/article'
+
 import { NextResponse } from 'next/server'
 import sequelize from '../../../../db_connection'
 import { DataTypes } from 'sequelize'
 
-import initArticleModel from '../../../../models/article'
 import { requireAdminSession } from '@/lib/auth'
 
 const Article = initArticleModel(sequelize, DataTypes)
@@ -10,6 +11,19 @@ const Article = initArticleModel(sequelize, DataTypes)
 export async function GET(req, { params }) {
   try {
     const article = await Article.findByPk(params.id)
+
+    if (!article) {
+      return NextResponse.json({ error: 'Article not found' }, { status: 404 })
+    }
+
+    // 格式化日期
+    const date = new Date(article.createdAt)
+    const options = { year: 'numeric', month: 'short', day: 'numeric' }
+    article.dataValues.createdAt = new Intl.DateTimeFormat(
+      'en-US',
+      options
+    ).format(date)
+
     return NextResponse.json(article)
   } catch (error) {
     console.error('Error fetching article:', error)
