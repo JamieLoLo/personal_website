@@ -1,6 +1,6 @@
 'use client'
 
-import { isMobile } from 'react-device-detect'
+import { isMobile as checkIsMobile } from 'react-device-detect'
 import { motion } from 'framer-motion'
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6'
 import { useEffect, useState } from 'react'
@@ -20,8 +20,13 @@ export default function CategoryEditPage() {
   const [id, setId] = useState(null)
   const [name, setName] = useState('')
   const [isMounted, setIsMounted] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const [mode, setMode] = useState('create')
   const { categories } = useSnapshot(uiState)
+
+  useEffect(() => {
+    setIsMobile(checkIsMobile)
+  }, [])
 
   useEffect(() => {
     if (status === 'unauthenticated') {

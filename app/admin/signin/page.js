@@ -1,9 +1,9 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-import { isMobile } from 'react-device-detect'
+import { isMobile as checkIsMobile } from 'react-device-detect'
 import { FaUserLarge } from 'react-icons/fa6'
 import { FaLock } from 'react-icons/fa6'
 
@@ -11,7 +11,12 @@ export default function Admin() {
   const [account, setAccount] = useState('')
   const [password, setPassword] = useState('')
   const [showErrorMsg, setShowErrorMsg] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
   const router = useRouter()
+
+  useEffect(() => {
+    setIsMobile(checkIsMobile)
+  }, [])
 
   const handleSubmit = async (e) => {
     e.preventDefault()

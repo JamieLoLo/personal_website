@@ -1,11 +1,18 @@
-import { isMobile } from 'react-device-detect'
+'use client'
+import { isMobile as checkIsMobile } from 'react-device-detect'
 import { FaPencil } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 
 export default function CategoryList({ categories }) {
   const { data: session } = useSession()
   const router = useRouter()
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(checkIsMobile)
+  }, [])
 
   return (
     <>

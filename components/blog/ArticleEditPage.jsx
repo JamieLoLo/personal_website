@@ -2,7 +2,7 @@
 
 import { use, useCallback, useEffect, useState } from 'react'
 import { uploadToS3 } from '@/lib/s3'
-import { isMobile } from 'react-device-detect'
+import { isMobile as checkIsMobile } from 'react-device-detect'
 import CreatePreview from '@/components/blog/CreatePreview'
 import { useRouter } from 'next/navigation'
 import { FaEye } from 'react-icons/fa'
@@ -29,8 +29,14 @@ export default function ArticleEditPage() {
   const [content, setContent] = useState('')
   const [viewMode, setViewMode] = useState('edit') // edit, preview
   const [category, setCategory] = useState([])
+  const [isMobile, setIsMobile] = useState(false)
+
   const router = useRouter()
   const { data: session, status } = useSession()
+
+  useEffect(() => {
+    setIsMobile(checkIsMobile)
+  }, [])
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -73,7 +79,7 @@ export default function ArticleEditPage() {
     }))
 
   const controlCategory = (e) => {
-    setCategory(e.value)
+    setCategory(e)
   }
 
   const customStyle = {
@@ -146,7 +152,7 @@ export default function ArticleEditPage() {
         const url = await uploadToS3(file)
         const textarea = document.querySelector('textarea')
         if (url) {
-          textarea.value += `<div className='relative w-full h-full'><Image src='${url}' alt='內文圖片' layout='fill' className='w-full object-contain' /></div>`
+          textarea.value += `<div className='w-full h-auto aspect-[1/0.52] relative '><Image src='${url}' alt='cover image' width={0} height={0} sizes='100vw' priority className='w-full h-auto object-contain' /></div>`
         }
       } catch (error) {
         console.error('Upload failed:', error)
@@ -169,7 +175,7 @@ export default function ArticleEditPage() {
         title,
         content,
         coverImage,
-        categoryId: category && category.length !== 0 ? category : null,
+        categoryId: category && category.length !== 0 ? category.value : null,
       })
       if (response.status === 201) {
         goBlogPage()
@@ -197,7 +203,7 @@ export default function ArticleEditPage() {
         title,
         content,
         coverImage,
-        categoryId: category || null,
+        categoryId: category.value || null,
       })
       if (response.status === 201) {
         toastHandler('success', 'success')

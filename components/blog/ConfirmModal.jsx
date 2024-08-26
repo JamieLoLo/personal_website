@@ -1,15 +1,20 @@
 'use client'
 
 import { uiState } from '@/lib/valtioState'
-import { isMobile } from 'react-device-detect'
+import { isMobile as checkIsMobile } from 'react-device-detect'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
 import { deleteHandler } from '@/lib/axiosHandler'
+import { useEffect, useState } from 'react'
 
 export default function ConfirmModal() {
   const { confirmVisible, id, api, onRefresh } = useSnapshot(
     uiState.confirmModal
   )
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    setIsMobile(checkIsMobile)
+  }, [])
 
   return (
     <AnimatePresence>
