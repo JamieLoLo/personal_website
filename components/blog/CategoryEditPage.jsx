@@ -1,11 +1,10 @@
 'use client'
 
 import { isMobile } from 'react-device-detect'
-import { m, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { FaPencil, FaRegTrashCan } from 'react-icons/fa6'
 import { useEffect, useState } from 'react'
 import Nav from './Nav'
-import Image from 'next/image'
 import { getAllHandler } from '@/lib/axiosHandler'
 import { useSnapshot } from 'valtio'
 import { uiState } from '@/lib/valtioState'
@@ -13,14 +12,22 @@ import axios from 'axios'
 import { toastHandler } from '@/lib/valtioAction'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function CategoryEditPage() {
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
+  const router = useRouter()
   const [id, setId] = useState(null)
   const [name, setName] = useState('')
   const [isMounted, setIsMounted] = useState(false)
   const [mode, setMode] = useState('create')
   const { categories } = useSnapshot(uiState)
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/admin/signin')
+    }
+  }, [status, router])
 
   useEffect(() => {
     setTimeout(() => {
@@ -43,14 +50,17 @@ export default function CategoryEditPage() {
   }
 
   useEffect(() => {
-    if (!isMounted || categories.data.length === 0) {
+    if (
+      (!isMounted || categories.data.length === 0) &&
+      status === 'authenticated'
+    ) {
       uiState.loading.loadingVisible = true
     } else {
       setTimeout(() => {
         uiState.loading.loadingVisible = false
       }, 1000)
     }
-  }, [isMounted, categories.data])
+  }, [isMounted, categories.data, status])
 
   const createHandler = async () => {
     if (!name) {
@@ -106,8 +116,12 @@ export default function CategoryEditPage() {
     }
   }
 
+  if (status !== 'authenticated') return null
+
   return (
-    <motion.div className='w-screen h-[100dvh] flex justify-center items-start'>
+    <motion.div
+      className={`w-screen h-[100dvh] flex justify-center items-start`}
+    >
       <SessionProviderWrapper>
         <Nav />
       </SessionProviderWrapper>

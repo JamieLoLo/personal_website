@@ -11,7 +11,7 @@ export default function CategoryList({ categories }) {
     <>
       <div className='flex items-center'>
         <p className='NotoSansM text-[15px]'>文章分類</p>
-        {session && session.user.name === 'Jamie' && (
+        {session && (
           <FaPencil
             className={`text-[14px] ml-[16px] cursor-pointer  translate-y-[1px] ${
               isMobile ? 'text-mainGrey-100' : 'text-mainGrey-100/85'
