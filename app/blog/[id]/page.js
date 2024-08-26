@@ -1,5 +1,10 @@
 'use client'
 
+import rehypeRaw from 'rehype-raw'
+import remarkGfm from 'remark-gfm'
+import rehypeHighlight from 'rehype-highlight'
+import '../../../app/markdownStyle.css'
+import 'highlight.js/styles/github.css'
 import Nav from '@/components/blog/Nav'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import { getOneHandler } from '@/lib/axiosHandler'
@@ -7,11 +12,14 @@ import { uiState } from '@/lib/valtioState'
 import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import ReactMarkdown from 'react-markdown'
-import rehypeRaw from 'rehype-raw'
 import { useSnapshot } from 'valtio'
 import { motion } from 'framer-motion'
+import DotsList from '@/components/blog/DotsList'
+import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 
 export default function BlogPostPage() {
+  const router = useRouter()
   const { article } = useSnapshot(uiState)
   const path = usePathname()
 
@@ -33,9 +41,13 @@ export default function BlogPostPage() {
     }
   }, [article.data])
 
+  const handleRefresh = () => {
+    router.push('/blog')
+  }
+
   return (
     <motion.div
-      className='w-screen h-[100dvh] flex justify-center relative overflow-y-scroll overscroll-none '
+      className='w-screen h-[100dvh] flex justify-center relative overflow-y-scroll overscroll-none select-text '
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -43,29 +55,40 @@ export default function BlogPostPage() {
       <SessionProviderWrapper>
         <Nav />
       </SessionProviderWrapper>
-      <div className='w-[700px] h-[calc(100%-60px)] mt-[60px]   py-[50px] px-[10px] flex  flex-col'>
+      <div className='w-[700px]  h-[calc(100%-60px)] mt-[60px]   py-[50px] px-[10px] flex  flex-col relative'>
+        <div className=' absolute top-0 left-0 translate-y-[200%] translate-x-[5px]'>
+          <SessionProviderWrapper>
+            <DotsList
+              target='singleArticle'
+              id={article.data.id}
+              onRefresh={handleRefresh}
+            />
+          </SessionProviderWrapper>
+        </div>
+
         <p className='text-[40px] NotoSansB tracking-tight'>
           {article.data.title}
         </p>
-        <p className='text-[13px] NotoSansM text-mainGrey-100 mt-[20px]'>
+        <p className='text-[14px] NotoSansM text-mainGrey-100 my-[20px]'>
           {article.data.createdAt}
         </p>
-        {/* <div className='w-full relative flex flex-col mt-[20px]'>
-          <div className='relative w-full h-0 pb-[58.25%]'>
+        <div className='w-full h-auto aspect-[1/0.52] relative '>
+          {article.data.coverImage && (
             <Image
-              src='/images/test.webp'
-              alt='logo'
-              layout='fill'
-              className='object-contain'
+              src={article.data.coverImage}
+              alt='cover image'
+              width={0}
+              height={0}
+              sizes='100vw'
+              priority
+              className='w-full h-auto object-contain'
             />
-          </div>
-          <p className='text-center text-[13px] NotoSansM text-mainGrey-100 mt-[20px]'>
-            Photo by Joshua Aragon on Unsplash
-          </p>
-        </div> */}
+          )}
+        </div>
         <ReactMarkdown
-          className='whitespace-pre-wrap mt-[50px] text-[20px] NotoSerifR pb-[20%]'
-          rehypePlugins={[rehypeRaw]}
+          className='whitespace-pre-wrap leading-[34px] mt-[10px] text-[18px] NotoSerifR pb-[20%] markdown-body'
+          rehypePlugins={[rehypeRaw, rehypeHighlight]}
+          remarkPlugins={[remarkGfm]}
         >
           {article.data.content}
         </ReactMarkdown>
