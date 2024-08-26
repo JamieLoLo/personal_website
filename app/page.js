@@ -1,8 +1,6 @@
 'use client'
 
 import CubeModel from '@/components/mainPage/CubeModel'
-import Image from 'next/image'
-import { isMobile } from 'react-device-detect'
 
 export default function Home() {
   return (
