@@ -1,9 +1,4 @@
-import {
-  S3Client,
-  PutObjectCommand,
-  GetObjectCommand,
-} from '@aws-sdk/client-s3'
-import { getSignedUrl } from '@aws-sdk/s3-request-presigner'
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3'
 import { v4 as uuid } from 'uuid'
 import { shortenUrlWithTinyURL } from '@/lib/shortenUrl'
 import { NextResponse } from 'next/server'
@@ -23,13 +18,13 @@ async function uploadImageToS3(file, fileName, type) {
     Key: `${Date.now()}-${fileName}`,
     Body: file,
     ContentType: type,
+    ACL: 'public-read',
   }
 
   const command = new PutObjectCommand(params)
   await s3Client.send(command)
 
-  const getCommand = new GetObjectCommand(params)
-  const url = await getSignedUrl(s3Client, getCommand, { expiresIn: 3600 })
+  const url = `https://${params.Bucket}.s3.${process.env.AWS_REGION}.amazonaws.com/${params.Key}`
 
   return url
 }
@@ -61,7 +56,7 @@ export async function POST(req) {
       mimeType
     )
 
-    // 缩短URL
+    // 縮短URL
     const shortUrl = await shortenUrlWithTinyURL(url)
 
     return new Response(JSON.stringify({ success: true, url: shortUrl }), {
