@@ -9,10 +9,12 @@ import ProjectInfo from './ProjectInfo'
 import { modelData } from '@/database/projectInfoData'
 import { useSnapshot } from 'valtio'
 import { windowSizeState } from '@/lib/windowSize'
+import Image from 'next/image'
 
 const fileUrl = '/model/Cube.glb'
 
 const MeshComponent = forwardRef((props, ref) => {
+  const { introVisible } = useSnapshot(uiState.introPage)
   const gltf = useLoader(GLTFLoader, fileUrl)
   const { scene, camera } = useThree()
   const initialClickPosition = useRef({ x: 0, y: 0 })
@@ -52,6 +54,11 @@ const MeshComponent = forwardRef((props, ref) => {
 
         const material = nodes[item.name].material
         material.map = newTexture
+
+        // 添加发光效果
+        material.emissive = new THREE.Color('#E9E9E9') // 设置发光颜色，可以调整为你需要的颜色
+        material.emissiveIntensity = 1.25 // 设置发光强度，适当调整这个值来增强发光效果
+        material.emissiveMap = newTexture // 使用纹理作为发光贴图
 
         if (item.name === 'Cube001_6') {
           material.opacity = 0.9
@@ -109,7 +116,11 @@ const MeshComponent = forwardRef((props, ref) => {
 
       if (intersects.length > 0) {
         const intersected = intersects[0].object
-        if (intersected.userData && intersected.userData.onClick) {
+        if (
+          intersected.userData &&
+          intersected.userData.onClick &&
+          !introVisible
+        ) {
           document.body.style.cursor = 'pointer'
         } else {
           document.body.style.cursor = 'default'
@@ -140,7 +151,11 @@ const MeshComponent = forwardRef((props, ref) => {
 
         if (intersects.length > 0) {
           const intersected = intersects[0].object
-          if (intersected.userData && intersected.userData.onClick) {
+          if (
+            intersected.userData &&
+            intersected.userData.onClick &&
+            !introVisible
+          ) {
             intersected.userData.onClick()
           }
         }
@@ -176,9 +191,9 @@ MeshComponent.displayName = 'MeshComponent'
 
 export default function CubeModel() {
   return (
-    <div className='w-full h-full overscroll-none relative'>
+    <div className={`w-full h-full overscroll-none relative `}>
       <Canvas linear={false}>
-        <ambientLight intensity={2.4} />
+        {/* <ambientLight intensity={0.1} /> */}
         <OrbitControls enableZoom={false} enablePan={false} />
         <MeshComponent />
       </Canvas>
