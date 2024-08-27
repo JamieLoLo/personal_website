@@ -1,15 +1,22 @@
 import { NextResponse } from 'next/server'
+import { requireAdminSession } from '@/lib/auth'
 import sequelize from '../../../db_connection'
 import { DataTypes } from 'sequelize'
-
 import initCategoryModel from '../../../models/category'
-import { requireAdminSession } from '@/lib/auth'
+import initArticleModel from '../../../models/article'
 
 const Category = initCategoryModel(sequelize, DataTypes)
+const Article = initArticleModel(sequelize, DataTypes)
+
+Category.associate({ Article })
+Article.associate({ Category })
 
 export async function GET() {
   try {
-    const categories = await Category.findAll()
+    const categories = await Category.findAll({
+      include: [{ model: Article }],
+    })
+
     return NextResponse.json(categories)
   } catch (error) {
     return NextResponse.json(

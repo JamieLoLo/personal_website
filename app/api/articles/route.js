@@ -7,11 +7,26 @@ import { requireAdminSession } from '@/lib/auth'
 
 const Article = initArticleModel(sequelize, DataTypes)
 
-export async function GET() {
-  try {
-    const articles = await Article.findAll()
+export async function GET(request) {
+  const { searchParams } = new URL(request.url)
+  const categoryId = searchParams.get('params')
 
-    // 格式化日期
+  const queryOptions = {
+    order: [['createdAt', 'DESC']], // 按照 createdAt 降序排列
+  }
+
+  if (categoryId) {
+    queryOptions.where = { categoryId }
+  }
+
+  try {
+    // 查詢符合條件的文章
+    const articles = await Article.findAll(queryOptions)
+
+    // 查詢所有文章的總數（不設限於類別）
+    const totalArticlesCount = await Article.count()
+
+    // 格式化日期並生成預覽內容
     const formattedArticles = articles.map((article) => {
       const date = new Date(article.createdAt)
       const options = { year: 'numeric', month: 'short', day: 'numeric' }
@@ -19,10 +34,24 @@ export async function GET() {
         'en-US',
         options
       ).format(date)
+
+      // 生成預覽內容
+      const contentWithoutTags = article.content
+        .replace(/<[^>]*>(.*?)<\/[^>]*>/g, '') // 移除標籤與內容
+        .replace(/---+/g, '') // 移除 markdown 的分隔線
+
+      article.dataValues.previewContent =
+        contentWithoutTags.trim().length > 60
+          ? contentWithoutTags.trim().slice(0, 60) + '...'
+          : contentWithoutTags.trim()
+
       return article
     })
 
-    return NextResponse.json(formattedArticles)
+    return NextResponse.json({
+      articles: formattedArticles,
+      totalArticlesCount,
+    })
   } catch (error) {
     return NextResponse.json(
       { error: 'Failed to fetch articles' },
