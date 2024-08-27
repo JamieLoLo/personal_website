@@ -6,11 +6,34 @@
   list-style-type: disc;
   padding-left: 20px;
   padding-top: 0px;
+  white-space: nowrap;
+  margin-bottom: 20px;
 }
 
 .markdown-body ol {
   list-style-type: decimal;
   padding-left: 20px;
+  display: inline-block;
+  white-space: nowrap;
+  margin-bottom: 20px;
+}
+
+.markdown-body ul li {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+.markdown-body ol li {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+
+.markdown-body ul > li > p {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
+}
+.markdown-body ol > li > p {
+  white-space: pre-wrap;
+  margin-bottom: 10px;
 }
 
 .markdown-body a {
@@ -63,4 +86,9 @@
   color: #555 !important;
   font-style: italic !important;
   margin: 1em 0 !important;
+  white-space: nowrap;
+}
+
+.markdown-body blockquote p {
+  white-space: pre-wrap;
 }
