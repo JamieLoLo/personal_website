@@ -10,11 +10,6 @@ import SessionProviderWrapper from './SessionProviderWrapper'
 export default function PostPreview({ article, onRefresh, index }) {
   const router = useRouter()
 
-  const previewContent =
-    article.content.length > 30
-      ? article.content.slice(0, 30) + '...'
-      : article.content
-
   const goSingleArticle = () => {
     router.push(`/blog/${article.id}`)
   }
@@ -24,7 +19,7 @@ export default function PostPreview({ article, onRefresh, index }) {
       className='w-full flex cursor-pointer relative'
       onClick={goSingleArticle}
     >
-      <div className=' absolute top-0 right-0'>
+      <div className=' absolute top-0 right-0 '>
         <SessionProviderWrapper>
           <DotsList
             target='preview'
@@ -41,13 +36,13 @@ export default function PostPreview({ article, onRefresh, index }) {
           className='text-[16px] text-mainGrey-100 py-[16px] whitespace-pre-wrap text-justify'
           rehypePlugins={[rehypeRaw]}
         >
-          {previewContent}
+          {article.previewContent}
         </ReactMarkdown>
         <p className='text-[13px] text-mainGrey-100 mt-[20px]'>
           {article.createdAt}
         </p>
       </div>
-      <div className='w-[250px] h-auto aspect-[1/0.52] relative  ml-[50px]'>
+      <div className='w-[250px] h-auto aspect-[1/0.52] relative  ml-[50px] mt-[20px]'>
         <Image
           src={article.coverImage}
           alt='cover image'
