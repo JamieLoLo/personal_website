@@ -72,7 +72,7 @@ export default function BlogPostPage() {
         <p className='text-[14px] NotoSansM text-mainGrey-100 my-[20px]'>
           {article.data.createdAt}
         </p>
-        <div className='w-full h-auto aspect-[1/0.52] relative '>
+        <div className='w-full h-auto aspect-auto relative '>
           {article.data.coverImage && (
             <Image
               src={article.data.coverImage}
@@ -85,6 +85,16 @@ export default function BlogPostPage() {
             />
           )}
         </div>
+        {article.data.coverImageDescription && (
+          <ReactMarkdown
+            className='whitespace-pre-wrap leading-[34px]  text-[18px] NotoSerifR mb-[20px] markdown-body'
+            rehypePlugins={[rehypeRaw, rehypeHighlight]}
+            remarkPlugins={[remarkGfm]}
+          >
+            {article.data.coverImageDescription}
+          </ReactMarkdown>
+        )}
+
         <ReactMarkdown
           className='whitespace-pre-wrap leading-[34px] mt-[10px] text-[18px] NotoSerifR pb-[20%] markdown-body'
           rehypePlugins={[rehypeRaw, rehypeHighlight]}

@@ -1,6 +1,6 @@
 'use client'
 
-import { use, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { uploadToS3 } from '@/lib/s3'
 import { isMobile as checkIsMobile } from 'react-device-detect'
 import CreatePreview from '@/components/blog/CreatePreview'
@@ -25,11 +25,13 @@ export default function ArticleEditPage() {
   const { categories, article } = useSnapshot(uiState)
   const [title, setTitle] = useState('')
   const [coverImage, setCoverImage] = useState('')
-  const [activeTopInput, setActiveTopInput] = useState('title') // title, cover
+  const [coverImageDescription, setCoverImageDescription] = useState('')
+  const [activeTopInput, setActiveTopInput] = useState('title') // title, cover, description
   const [content, setContent] = useState('')
   const [viewMode, setViewMode] = useState('edit') // edit, preview
   const [category, setCategory] = useState([])
   const [isMobile, setIsMobile] = useState(false)
+  const [showTopInputList, setShowTopInputList] = useState(false)
 
   const router = useRouter()
   const { data: session, status } = useSession()
@@ -49,6 +51,9 @@ export default function ArticleEditPage() {
       setTitle(article.data.title)
       setCoverImage(article.data.coverImage)
       setContent(article.data.content)
+      setCoverImageDescription(article.data.coverImageDescription || '')
+
+      console.log(article.data.coverImageDescription)
 
       const selectedCategory = categories.data.find(
         (category) => category.id === article.data.categoryId
@@ -152,7 +157,7 @@ export default function ArticleEditPage() {
         const url = await uploadToS3(file)
         const textarea = document.querySelector('textarea')
         if (url) {
-          textarea.value += `<div className='w-full h-auto aspect-[1/0.52] relative '><Image src='${url}' alt='cover image' width={0} height={0} sizes='100vw' priority className='w-full h-auto object-contain' /></div>`
+          textarea.value += `<div className='w-full h-auto aspect-auto relative '><Image src='${url}' alt='cover image' width={0} height={0} sizes='100vw' priority className='w-full h-auto object-contain' /></div>`
         }
       } catch (error) {
         console.error('Upload failed:', error)
@@ -175,6 +180,7 @@ export default function ArticleEditPage() {
         title,
         content,
         coverImage,
+        coverImageDescription: coverImageDescription || null,
         categoryId: category && category.length !== 0 ? category.value : null,
       })
       if (response.status === 201) {
@@ -197,12 +203,12 @@ export default function ArticleEditPage() {
       alert('Please fill out all fields before publishing.')
       return
     }
-
     try {
       const response = await axios.put(`/api/articles/${article.data.id}`, {
         title,
         content,
         coverImage,
+        coverImageDescription: coverImageDescription || null,
         categoryId: category.value || null,
       })
       if (response.status === 201) {
@@ -254,24 +260,83 @@ export default function ArticleEditPage() {
             }}
           />
         </div>
-        <MdOutlineChangeCircle
-          className={`cursor-pointer text-mainGrey-100 text-[20px] ml-[20px]  ${
-            !isMobile && 'hover:scale-[1.05] hover:bg-mainGrey2-100'
-          }`}
-          onClick={() => {
-            setActiveTopInput(activeTopInput === 'title' ? 'cover' : 'title')
-          }}
-        />
+        <div className='relative'>
+          <MdOutlineChangeCircle
+            className={`cursor-pointer text-mainGrey-100 text-[20px] ml-[20px]  ${
+              !isMobile && 'hover:scale-[1.05] hover:bg-mainGrey2-100'
+            }`}
+            onClick={() => {
+              setShowTopInputList(!showTopInputList)
+            }}
+          />
+          {showTopInputList && (
+            <div className=' absolute bottom-0 left-1/2 -translate-x-1/2 translate-y-[calc(100%+16px)]  bg-white z-10 shadow-[rgba(0,0,15,0.2)_0px_0px_10px_0px] rounded-[5px] text-[16px] whitespace-nowrap'>
+              <p
+                className={`px-[20px] py-[5px] cursor-pointer ${
+                  isMobile
+                    ? 'text-textBlack-100'
+                    : 'text-textBlack-100/80 hover:text-textBlack-100 hover:bg-mainGrey2-100/50'
+                }`}
+                onClick={() => {
+                  setActiveTopInput('title')
+                  setShowTopInputList(false)
+                }}
+              >
+                Title
+              </p>
+              <p
+                className={`px-[20px] py-[5px] cursor-pointer ${
+                  isMobile
+                    ? 'text-textBlack-100'
+                    : 'text-textBlack-100/80 hover:text-textBlack-100 hover:bg-mainGrey2-100/50'
+                }`}
+                onClick={() => {
+                  setActiveTopInput('cover')
+                  setShowTopInputList(false)
+                }}
+              >
+                Cover Image
+              </p>
+              <p
+                className={`px-[20px] py-[5px] cursor-pointer ${
+                  isMobile
+                    ? 'text-textBlack-100'
+                    : 'text-textBlack-100/80 hover:text-textBlack-100 hover:bg-mainGrey2-100/50'
+                }`}
+                onClick={() => {
+                  setActiveTopInput('description')
+                  setShowTopInputList(false)
+                }}
+              >
+                Description
+              </p>
+            </div>
+          )}
+        </div>
         <input
           type='text'
           className={`flex-1 mx-[16px] ml-[5px] gap-[10px] rounded-[5px] focus:outline-none p-[5px] `}
-          placeholder={activeTopInput === 'title' ? 'Title' : 'Cover Image'}
-          value={activeTopInput === 'title' ? title : coverImage}
+          placeholder={
+            activeTopInput === 'title'
+              ? 'Title'
+              : activeTopInput === 'cover'
+              ? 'Cover Image'
+              : 'Description'
+          }
+          value={
+            activeTopInput === 'title'
+              ? title
+              : activeTopInput === 'cover'
+              ? coverImage
+              : coverImageDescription
+          }
           onChange={(e) => {
             if (activeTopInput === 'title') {
               setTitle(e.target.value)
-            } else {
+            } else if (activeTopInput === 'cover') {
               setCoverImage(e.target.value)
+            } else {
+              setCoverImageDescription(e.target.value)
             }
           }}
         />
