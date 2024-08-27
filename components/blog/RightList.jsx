@@ -2,7 +2,7 @@ import Image from 'next/image'
 import CategoryList from './CategoryList'
 import SessionProviderWrapper from './SessionProviderWrapper'
 
-export default function RightList({ categories }) {
+export default function RightList({ categories, articlesTotal }) {
   return (
     <div className='  absolute top-0 right-0 w-full h-full border-l pt-[10%] pl-[10%] pr-[2.5vw] overflow-y-scroll overscroll-none '>
       <div className='w-[90px] h-[90px] relative '>
@@ -24,7 +24,7 @@ export default function RightList({ categories }) {
       </p>
       <div className=' mt-[40px]  '>
         <SessionProviderWrapper>
-          <CategoryList categories={categories} />
+          <CategoryList categories={categories} articlesTotal={articlesTotal} />
         </SessionProviderWrapper>
       </div>
     </div>

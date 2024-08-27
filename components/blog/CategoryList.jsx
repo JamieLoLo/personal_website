@@ -4,8 +4,9 @@ import { FaPencil } from 'react-icons/fa6'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
+import { getAllHandler } from '@/lib/axiosHandler'
 
-export default function CategoryList({ categories }) {
+export default function CategoryList({ categories, articlesTotal }) {
   const { data: session } = useSession()
   const router = useRouter()
   const [isMobile, setIsMobile] = useState(false)
@@ -29,24 +30,45 @@ export default function CategoryList({ categories }) {
           />
         )}
       </div>
+
       <div className='mt-[8px]'>
-        {categories.map((category, index) => (
-          <div
-            key={`categoryList_${index}`}
-            className='mt-[3px] flex items-center'
-          >
-            <p
-              key={category.id}
-              className={`text-[14px]  NotoSansR cursor-pointer ${
-                isMobile
-                  ? 'text-textBlack-100'
-                  : 'text-mainGrey-100 hover:text-textBlack-100'
-              }`}
-            >
-              {category.name}
-            </p>
-          </div>
-        ))}
+        <p
+          className={` text-[14px]  NotoSansR cursor-pointer ${
+            isMobile
+              ? 'text-textBlack-100'
+              : 'text-mainGrey-100 hover:text-textBlack-100'
+          }`}
+          onClick={() => {
+            getAllHandler('/api/articles', 'articles')
+          }}
+        >
+          All ({articlesTotal})
+        </p>
+        {categories.map((category, index) => {
+          if (category.Articles.length !== 0) {
+            return (
+              <div
+                key={`categoryList_${index}`}
+                className='mt-[3px] flex items-center'
+              >
+                <p
+                  className={`text-[14px]  NotoSansR cursor-pointer ${
+                    isMobile
+                      ? 'text-textBlack-100'
+                      : 'text-mainGrey-100 hover:text-textBlack-100'
+                  }`}
+                  onClick={() => {
+                    getAllHandler('/api/articles', 'articles', {
+                      params: category.id,
+                    })
+                  }}
+                >
+                  {category.name} ({category.Articles.length})
+                </p>
+              </div>
+            )
+          }
+        })}
       </div>
     </>
   )

@@ -42,7 +42,7 @@ export default function Blog() {
 
   return (
     <motion.div
-      className='w-screen h-[100dvh] flex justify-center'
+      className='w-screen h-[100dvh] flex justify-center '
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -50,11 +50,12 @@ export default function Blog() {
       <SessionProviderWrapper>
         <Nav />
       </SessionProviderWrapper>
+
       <div className='w-[85%]   h-[calc(100%-60px)] mt-[60px] relative flex'>
         <div className='w-[70%] pl-[2.5vw] h-full relative py-[5%] pr-[5%] overflow-y-scroll overscroll-none'>
           {articles.data &&
             articles.data.map((item, index) => (
-              <div key={item.id} className='w-full '>
+              <div key={`article_${item.id}`} className='w-full '>
                 <PostPreview
                   index={index}
                   article={item}
@@ -67,7 +68,10 @@ export default function Blog() {
             ))}
         </div>
         <div className='w-[30%] h-full relative '>
-          <RightList categories={categories.data} />
+          <RightList
+            categories={categories.data}
+            articlesTotal={articles.total}
+          />
         </div>
       </div>
     </motion.div>
