@@ -41,14 +41,22 @@ export async function PUT(req, { params }) {
     return NextResponse.json({ error: authResult.error }, { status: 401 })
   }
 
-  const { title, content, coverImage, categoryId } = await req.json()
+  const { title, content, coverImage, coverImageDescription, categoryId } =
+    await req.json()
 
   try {
     const article = await Article.findByPk(params.id)
     if (!article) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 })
     }
-    article.update({ title, content, coverImage, categoryId })
+
+    article.update({
+      title,
+      content,
+      coverImage,
+      coverImageDescription,
+      categoryId,
+    })
     return NextResponse.json(article, { status: 201 })
   } catch (error) {
     console.error('Error fetching upload article:', error)
