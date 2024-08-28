@@ -53,8 +53,6 @@ export default function ArticleEditPage() {
       setContent(article.data.content)
       setCoverImageDescription(article.data.coverImageDescription || '')
 
-      console.log(article.data.coverImageDescription)
-
       const selectedCategory = categories.data.find(
         (category) => category.id === article.data.categoryId
       )
