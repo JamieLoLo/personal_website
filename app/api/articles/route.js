@@ -68,12 +68,14 @@ export async function POST(req) {
   }
 
   try {
-    const { title, content, coverImage, categoryId } = await req.json()
+    const { title, content, coverImage, coverImageDescription, categoryId } =
+      await req.json()
 
     const article = await Article.create({
       title,
       content,
       coverImage,
+      coverImageDescription,
       categoryId,
     })
     return NextResponse.json(article, { status: 201 })
