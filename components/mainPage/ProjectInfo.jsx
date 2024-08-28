@@ -74,7 +74,7 @@ export default function ProjectInfo() {
       transition={{ duration: 0.5 }}
     >
       <motion.div
-        className='w-full h-full bg-mainGrey-100/80'
+        className='w-full h-full bg-infoFilter-100/60'
         onClick={closeHandler}
       ></motion.div>
       <motion.div

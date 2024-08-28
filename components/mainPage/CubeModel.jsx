@@ -9,11 +9,10 @@ import ProjectInfo from './ProjectInfo'
 import { modelData } from '@/database/projectInfoData'
 import { useSnapshot } from 'valtio'
 import { windowSizeState } from '@/lib/windowSize'
-import Image from 'next/image'
 
 const fileUrl = '/model/Cube.glb'
 
-const MeshComponent = forwardRef((props, ref) => {
+const MeshComponent = forwardRef((props, forwardedRef) => {
   const { introVisible } = useSnapshot(uiState.introPage)
   const gltf = useLoader(GLTFLoader, fileUrl)
   const { scene, camera } = useThree()
@@ -23,6 +22,20 @@ const MeshComponent = forwardRef((props, ref) => {
   const mouse = useRef(new THREE.Vector2())
   const [isLoaded, setIsLoaded] = useState(false)
   const { mobileMode } = useSnapshot(windowSizeState)
+
+  const internalRef = useRef() // 創建本地 ref
+  const rotationRef = useRef(0) // 記錄旋轉角度
+
+  // 合併 internalRef 與 forwardedRef
+  const combinedRef = useRef()
+  useEffect(() => {
+    combinedRef.current = internalRef.current
+    if (typeof forwardedRef === 'function') {
+      forwardedRef(combinedRef.current)
+    } else if (forwardedRef) {
+      forwardedRef.current = combinedRef.current
+    }
+  }, [forwardedRef])
 
   useEffect(() => {
     if (!isLoaded) {
@@ -55,10 +68,9 @@ const MeshComponent = forwardRef((props, ref) => {
         const material = nodes[item.name].material
         material.map = newTexture
 
-        // 添加发光效果
-        material.emissive = new THREE.Color('#E9E9E9') // 设置发光颜色，可以调整为你需要的颜色
-        material.emissiveIntensity = 1.25 // 设置发光强度，适当调整这个值来增强发光效果
-        material.emissiveMap = newTexture // 使用纹理作为发光贴图
+        material.emissive = new THREE.Color('#E9E9E9')
+        material.emissiveIntensity = 1.25
+        material.emissiveMap = newTexture
 
         if (item.name === 'Cube001_6') {
           material.opacity = 0.9
@@ -98,7 +110,7 @@ const MeshComponent = forwardRef((props, ref) => {
         opacity: 0.7,
         transparent: true,
       })
-      nodes.Cube001.renderOrder = 2 // 減少個透明物件中渲染衝突造成的閃爍
+      nodes.Cube001.renderOrder = 2
       nodes.Cube001.material = material
     }
 
@@ -172,14 +184,29 @@ const MeshComponent = forwardRef((props, ref) => {
       window.removeEventListener('pointerup', handlePointerUp)
       document.body.style.cursor = 'default'
     }
-  }, [gltf, scene, camera, router, isLoaded])
+  }, [gltf, scene, camera, router, isLoaded, introVisible])
+
+  useEffect(() => {
+    if (isLoaded && introVisible) {
+      const rotateModel = () => {
+        if (combinedRef.current) {
+          // 使用 combinedRef
+          rotationRef.current += 0.003 // 控制旋轉速度
+          combinedRef.current.rotation.y = rotationRef.current
+        }
+        if (introVisible) {
+          requestAnimationFrame(rotateModel)
+        }
+      }
+      rotateModel()
+    }
+  }, [isLoaded, introVisible])
 
   return (
     <>
       <mesh
-        ref={ref}
+        ref={internalRef} // 绑定内部ref
         scale={mobileMode ? 1.2 : 1.6}
-        rotation={[0, Math.PI / 4, 0]}
       >
         <primitive object={gltf.scene} />
       </mesh>
@@ -193,7 +220,6 @@ export default function CubeModel() {
   return (
     <div className={`w-full h-full overscroll-none relative `}>
       <Canvas linear={false}>
-        {/* <ambientLight intensity={0.1} /> */}
         <OrbitControls enableZoom={false} enablePan={false} />
         <MeshComponent />
       </Canvas>

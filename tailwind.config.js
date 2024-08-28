@@ -30,6 +30,12 @@ module.exports = {
         infoBg: {
           100: '#E1E1DB',
         },
+        ticker: {
+          100: '#FDEA1F',
+        },
+        infoFilter: {
+          100: '#2C2C2C',
+        },
       },
     },
     screens: {
