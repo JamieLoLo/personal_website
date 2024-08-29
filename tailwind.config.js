@@ -28,12 +28,12 @@ module.exports = {
           100: '#242424',
         },
         infoBg: {
-          100: '#E1E1DB',
+          100: '#E7E7E1',
         },
         ticker: {
-          100: '#FDEA1F',
+          100: '#DA691D',
         },
-        infoFilter: {
+        bgBlack: {
           100: '#2C2C2C',
         },
       },
