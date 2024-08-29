@@ -59,6 +59,7 @@ export default function CategoryEditPage() {
       (!isMounted || categories.data.length === 0) &&
       status === 'authenticated'
     ) {
+      uiState.loading.colorMode = 'light'
       uiState.loading.loadingVisible = true
     } else {
       setTimeout(() => {

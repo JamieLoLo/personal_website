@@ -32,6 +32,7 @@ export default function Blog() {
 
   useEffect(() => {
     if (articles.data.length === 0 || categories.data.length === 0) {
+      uiState.loading.colorMode = 'light'
       uiState.loading.loadingVisible = true
     } else {
       setTimeout(() => {
