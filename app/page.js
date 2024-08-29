@@ -83,7 +83,7 @@ export default function Home() {
               e.stopPropagation()
             }}
           >
-            <div className='w-full h-auto absolute top-[20%] left-[5%]'>
+            <div className='w-full h-auto absolute top-[20%] portraitPh:top-[25%] left-[5%]'>
               <Image
                 src={
                   mobileMode ? '/images/intro_ph.png' : '/images/intro_pc.png'
@@ -95,33 +95,34 @@ export default function Home() {
                 priority
                 className=' w-[80%] portraitPh:w-[90%] h-auto object-contain'
               />
-
-              <Image
-                src={
-                  isExploreBtnHovered && !isMobile
-                    ? '/images/exploreBtn_b.png'
-                    : '/images/exploreBtn_w.png'
-                }
-                alt='explore button'
-                width={0}
-                height={0}
-                sizes='100vw'
-                priority
-                className={`mt-[15%] portraitPad:mt-[20%] portraitPh:mt-[40%] w-[150px] h-auto object-contain border-2 p-4 cursor-pointer ${
-                  !isMobile && 'hover:bg-white'
-                } `}
-                onClick={closeHandler}
-                onMouseEnter={() => {
-                  if (!isMobile) {
-                    setIsExploreBtnHovered(true)
+              <div className='w-full h-auto mt-[15%] portraitPad:mt-[20%] portraitPh:mt-[40%]  flex portraitPh:justify-center portraitPh:pr-[10%]'>
+                <Image
+                  src={
+                    isExploreBtnHovered && !isMobile
+                      ? '/images/exploreBtn_b.png'
+                      : '/images/exploreBtn_w.png'
                   }
-                }}
-                onMouseLeave={() => {
-                  if (!isMobile) {
-                    setIsExploreBtnHovered(false)
-                  }
-                }}
-              />
+                  alt='explore button'
+                  width={0}
+                  height={0}
+                  sizes='100vw'
+                  priority
+                  className={` w-[150px] portraitPh:w-[130px] h-auto object-contain border-2 p-4 cursor-pointer ${
+                    !isMobile && 'hover:bg-white'
+                  } `}
+                  onClick={closeHandler}
+                  onMouseEnter={() => {
+                    if (!isMobile) {
+                      setIsExploreBtnHovered(true)
+                    }
+                  }}
+                  onMouseLeave={() => {
+                    if (!isMobile) {
+                      setIsExploreBtnHovered(false)
+                    }
+                  }}
+                />
+              </div>
             </div>
           </motion.div>
         )}
