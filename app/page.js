@@ -8,12 +8,19 @@ import { useEffect, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import Ticker from '@/components/mainPage/Ticker'
 import { windowSizeState } from '@/lib/windowSize'
+import { isMobile as checkIsMobile } from 'react-device-detect'
 
 export default function Home() {
   const { introVisible } = useSnapshot(uiState.introPage)
   const { loadingVisible } = useSnapshot(uiState.loading)
   const { mobileMode } = useSnapshot(windowSizeState)
   const [showTicker, setShowTicker] = useState(false)
+  const [isExploreBtnHovered, setIsExploreBtnHovered] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(checkIsMobile)
+  }, [])
 
   useEffect(() => {
     if (loadingVisible) {
@@ -85,14 +92,30 @@ export default function Home() {
               />
 
               <Image
-                src='/images/exploreBtn.png'
+                src={
+                  isExploreBtnHovered && !isMobile
+                    ? '/images/exploreBtn_b.png'
+                    : '/images/exploreBtn_w.png'
+                }
                 alt='explore button'
                 width={0}
                 height={0}
                 sizes='100vw'
                 priority
-                className='mt-[15%] portraitPad:mt-[20%] portraitPh:mt-[40%] w-[150px] h-auto object-contain border-2 p-4 cursor-pointer'
+                className={`mt-[15%] portraitPad:mt-[20%] portraitPh:mt-[40%] w-[150px] h-auto object-contain border-2 p-4 cursor-pointer ${
+                  !isMobile && 'hover:bg-white'
+                } `}
                 onClick={closeHandler}
+                onMouseEnter={() => {
+                  if (!isMobile) {
+                    setIsExploreBtnHovered(true)
+                  }
+                }}
+                onMouseLeave={() => {
+                  if (!isMobile) {
+                    setIsExploreBtnHovered(false)
+                  }
+                }}
               />
             </div>
           </motion.div>
