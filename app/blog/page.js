@@ -6,7 +6,7 @@ import RightList from '@/components/blog/RightList'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import { getAllHandler } from '@/lib/axiosHandler'
 import { uiState } from '@/lib/valtioState'
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { motion } from 'framer-motion'
 
@@ -18,16 +18,25 @@ const Select = dynamic(() => import('react-select'), { ssr: false })
 export default function Blog() {
   const { articles, categories, selectedCategory } = useSnapshot(uiState)
   const { offset } = useSnapshot(uiState.lazyLoad)
+  const [category, setCategory] = useState(null)
   const scrollRef = useRef(null)
 
   const limit = 8
   const bottomRef = useRef(null)
+
+  useEffect(() => {
+    if (selectedCategory && categories.data.length > 0) {
+      let label = categories.data.find((el) => el.id === selectedCategory).name
+      setCategory({ value: selectedCategory, label: label })
+    }
+  }, [selectedCategory])
 
   const controlCategory = (e) => {
     uiState.lazyLoad.offset = 0
 
     if (e.value === 9999) {
       uiState.selectedCategory = null
+      setCategory({ value: 9999, label: 'All' })
       getAllHandler('/api/articles', 'articles', {}, true)
     } else {
       uiState.selectedCategory = e.value
@@ -63,9 +72,11 @@ export default function Blog() {
   }
 
   useEffect(() => {
-    fetchAllArticles()
+    if (!selectedCategory) {
+      fetchAllArticles()
+    }
     fetchCategories()
-  }, [])
+  }, [selectedCategory])
 
   const handleDataRefresh = () => {
     fetchAllArticles()
@@ -147,6 +158,7 @@ export default function Blog() {
             isSearchable={false}
             placeholder='All'
             isSelected={true}
+            value={category || ''}
           />
         </div>
 
