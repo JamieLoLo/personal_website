@@ -45,10 +45,10 @@ export async function GET(request) {
         .replace(/<[^>]*>(.*?)<\/[^>]*>/g, '') // 移除標籤與內容
         .replace(/---+/g, '') // 移除 markdown 的分隔線
 
-      // 預覽 60 字
+      // 預覽 40 字
       article.dataValues.previewContent =
-        contentWithoutTags.trim().length > 60
-          ? contentWithoutTags.trim().slice(0, 60) + '...'
+        contentWithoutTags.trim().length > 40
+          ? contentWithoutTags.trim().slice(0, 40) + '...'
           : contentWithoutTags.trim()
 
       return article
