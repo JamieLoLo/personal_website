@@ -14,6 +14,7 @@ export default function Home() {
   const { introVisible } = useSnapshot(uiState.introPage)
   const { loadingVisible } = useSnapshot(uiState.loading)
   const { mobileMode } = useSnapshot(windowSizeState)
+  const { isLoaded } = useSnapshot(uiState.model)
   const [showTicker, setShowTicker] = useState(false)
   const [isExploreBtnHovered, setIsExploreBtnHovered] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
@@ -65,7 +66,11 @@ export default function Home() {
           className='w-full h-full object-cover'
         />
       </motion.div>
-      <div className=' w-full h-full object-cover absolute top-0 left-0 bg-black/70'></div>
+      <div
+        className={`w-full h-full object-cover absolute top-0 left-0  ${
+          isLoaded ? 'bg-black/70' : 'bg-bgBlack-100'
+        }`}
+      ></div>
       <AnimatePresence>
         {introVisible && (
           <motion.div

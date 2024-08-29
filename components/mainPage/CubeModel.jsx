@@ -15,6 +15,7 @@ const fileUrl = '/model/Cube.glb'
 const MeshComponent = forwardRef((props, forwardedRef) => {
   const { introVisible } = useSnapshot(uiState.introPage)
   const { infoVisible } = useSnapshot(uiState.projectInfo)
+  const { isLoaded } = useSnapshot(uiState.model)
 
   const gltf = useLoader(GLTFLoader, fileUrl)
   const { scene, camera } = useThree()
@@ -22,7 +23,6 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
   const router = useRouter()
   const raycaster = useRef(new THREE.Raycaster())
   const mouse = useRef(new THREE.Vector2())
-  const [isLoaded, setIsLoaded] = useState(false)
   const { mobileMode } = useSnapshot(windowSizeState)
 
   const internalRef = useRef() // 創建本地 ref
@@ -45,6 +45,9 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       setTimeout(() => {
         uiState.loading.loadingVisible = false
       }, 1000)
+    } else {
+      uiState.loading.colorMode = 'dark'
+      uiState.loading.loadingVisible = true
     }
   }, [isLoaded])
 
@@ -61,7 +64,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       if (nodes && nodes[item.name]) {
         const textureLoader = new THREE.TextureLoader()
         const newTexture = textureLoader.load(item.texture, () => {
-          setIsLoaded(true)
+          uiState.model.isLoaded = true
         })
 
         newTexture.repeat.set(1, -1)
@@ -100,7 +103,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       const texture = textureLoader.load(
         '/model/texture/cubeTexture.jpg',
         () => {
-          setIsLoaded(true)
+          uiState.model.isLoaded = true
         }
       )
 

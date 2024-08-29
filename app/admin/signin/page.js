@@ -17,7 +17,6 @@ export default function Admin() {
 
   useEffect(() => {
     setIsMobile(checkIsMobile)
-    uiState.loading.loadingVisible = false
   }, [])
 
   const handleSubmit = async (e) => {
