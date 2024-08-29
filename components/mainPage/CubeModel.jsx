@@ -14,6 +14,8 @@ const fileUrl = '/model/Cube.glb'
 
 const MeshComponent = forwardRef((props, forwardedRef) => {
   const { introVisible } = useSnapshot(uiState.introPage)
+  const { infoVisible } = useSnapshot(uiState.projectInfo)
+
   const gltf = useLoader(GLTFLoader, fileUrl)
   const { scene, camera } = useThree()
   const initialClickPosition = useRef({ x: 0, y: 0 })
@@ -28,6 +30,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
 
   // 合併 internalRef 與 forwardedRef
   const combinedRef = useRef()
+
   useEffect(() => {
     combinedRef.current = internalRef.current
     if (typeof forwardedRef === 'function') {
@@ -45,6 +48,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
     }
   }, [isLoaded])
 
+  // 加载模型和材质
   useEffect(() => {
     if (!camera || !camera.isPerspectiveCamera) {
       console.error('Camera is not a valid PerspectiveCamera')
@@ -81,7 +85,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
             onClick: () => {
               uiState.projectInfo.activeProject = item.id
               setTimeout(() => {
-                uiState.projectInfo.visible = true
+                uiState.projectInfo.infoVisible = true
               }, 200)
             },
           }
@@ -111,7 +115,10 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       nodes.Cube001.renderOrder = 2
       nodes.Cube001.material = material
     }
+  }, [gltf, scene, camera, router])
 
+  // 事件監聽
+  useEffect(() => {
     const onPointerMove = (event) => {
       if (!isLoaded) return
 
@@ -129,7 +136,8 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
         if (
           intersected.userData &&
           intersected.userData.onClick &&
-          !introVisible
+          !introVisible &&
+          !infoVisible
         ) {
           document.body.style.cursor = 'pointer'
         } else {
@@ -164,7 +172,8 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
           if (
             intersected.userData &&
             intersected.userData.onClick &&
-            !introVisible
+            !introVisible &&
+            !infoVisible
           ) {
             intersected.userData.onClick()
           }
@@ -182,23 +191,37 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       window.removeEventListener('pointerup', handlePointerUp)
       document.body.style.cursor = 'default'
     }
-  }, [gltf, scene, camera, router, isLoaded, introVisible])
+  }, [isLoaded, camera, scene, introVisible, infoVisible])
+
+  // 模型旋轉
+  useEffect(() => {
+    if (isLoaded) {
+      const rotateModel = () => {
+        if (combinedRef.current) {
+          rotationRef.current += 0.003 // 控制旋轉速度
+          combinedRef.current.rotation.y = rotationRef.current
+        }
+
+        requestAnimationFrame(rotateModel)
+      }
+      rotateModel()
+    }
+  }, [isLoaded])
 
   useEffect(() => {
-    if (isLoaded && introVisible) {
+    if (isLoaded) {
       const rotateModel = () => {
         if (combinedRef.current) {
           // 使用 combinedRef
           rotationRef.current += 0.003 // 控制旋轉速度
           combinedRef.current.rotation.y = rotationRef.current
         }
-        if (introVisible) {
-          requestAnimationFrame(rotateModel)
-        }
+
+        requestAnimationFrame(rotateModel)
       }
       rotateModel()
     }
-  }, [isLoaded, introVisible])
+  }, [isLoaded])
 
   return (
     <>
@@ -216,8 +239,8 @@ MeshComponent.displayName = 'MeshComponent'
 
 export default function CubeModel() {
   return (
-    <div className={`w-full h-full overscroll-none relative `}>
-      <Canvas linear={false}>
+    <div className={`w-full h-full overscroll-none relative  `}>
+      <Canvas linear={false} className='pointer-events-none'>
         <OrbitControls enableZoom={false} enablePan={false} />
         <MeshComponent />
       </Canvas>
