@@ -83,7 +83,7 @@ export default function Home() {
               e.stopPropagation()
             }}
           >
-            <div className='w-full h-auto absolute top-[20%] portraitPh:top-[25%] left-[5%]'>
+            <div className='w-full h-auto absolute top-[20%] portraitPh:top-[25%] landscapePhone:top-[17%] left-[5%]'>
               <Image
                 src={
                   mobileMode ? '/images/intro_ph.png' : '/images/intro_pc.png'
@@ -95,7 +95,7 @@ export default function Home() {
                 priority
                 className=' w-[80%] portraitPh:w-[90%] h-auto object-contain'
               />
-              <div className='w-full h-auto mt-[15%] portraitPad:mt-[20%] portraitPh:mt-[40%]  flex portraitPh:justify-center portraitPh:pr-[10%]'>
+              <div className='w-full h-auto mt-[15%] portraitPad:mt-[20%] portraitPh:mt-[40%] landscapePhone:mt-[8%]  flex portraitPh:justify-center portraitPh:pr-[10%] landscapePhone:justify-center landscapePhone:pr-[10%]'>
                 <Image
                   src={
                     isExploreBtnHovered && !isMobile
@@ -107,7 +107,7 @@ export default function Home() {
                   height={0}
                   sizes='100vw'
                   priority
-                  className={` w-[150px] portraitPh:w-[130px] h-auto object-contain border-2 p-4 cursor-pointer ${
+                  className={` w-[150px] portraitPh:w-[130px] landscapePhone:w-[130px] h-auto object-contain border-2 p-4 cursor-pointer ${
                     !isMobile && 'hover:bg-white'
                   } `}
                   onClick={closeHandler}
