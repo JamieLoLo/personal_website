@@ -32,13 +32,10 @@ export default function BlogPostPage() {
   }, [])
 
   useEffect(() => {
-    if (!article.data || article.data.length === 0) {
-      uiState.loading.colorMode = 'light'
-      uiState.loading.loadingVisible = true
-    } else {
+    if (article.data && article.data.length !== 0) {
       setTimeout(() => {
         uiState.loading.loadingVisible = false
-      }, 1000)
+      }, 500)
     }
   }, [article.data])
 
@@ -56,7 +53,7 @@ export default function BlogPostPage() {
       <SessionProviderWrapper>
         <Nav />
       </SessionProviderWrapper>
-      <div className='w-[700px]  h-[calc(100%-60px)] mt-[60px]   py-[50px] px-[10px] flex  flex-col relative'>
+      <div className='w-[700px] portraitPad:w-[90%] portraitPh:w-[95%] landscapePhone:w-[95%]  h-[calc(100%-60px)] mt-[60px]   py-[50px] px-[10px] flex  flex-col relative'>
         <div className=' absolute top-0 left-0 translate-y-[200%] translate-x-[5px]'>
           <SessionProviderWrapper>
             <DotsList
@@ -67,7 +64,7 @@ export default function BlogPostPage() {
           </SessionProviderWrapper>
         </div>
 
-        <p className='text-[40px] NotoSansB tracking-tight'>
+        <p className='text-[40px] portraitPh:text-[26px] NotoSansB tracking-tight'>
           {article.data.title}
         </p>
         <p className='text-[14px] NotoSansM text-mainGrey-100 my-[20px]'>

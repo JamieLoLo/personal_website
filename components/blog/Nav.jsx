@@ -28,7 +28,7 @@ export default function Nav() {
   return (
     <div className='fixed top-0 left-0 w-full h-[60px] z-10 flex border-b items-center justify-between px-[20px] bg-white'>
       <p
-        className='text-[25px] EB-GaramondB cursor-pointer'
+        className='text-[25px] portraitPh:text-[20px] EB-GaramondB cursor-pointer'
         onClick={goBlogPage}
       >
         Jamie&apos;s Blog

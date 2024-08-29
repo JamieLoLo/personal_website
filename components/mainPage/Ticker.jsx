@@ -15,7 +15,7 @@ export default function Ticker({ visible }) {
     <>
       {visible && (
         <motion.div
-          className='w-[40%] portraitPad:w-[95%] h-[50px] overflow-hidden relative  text-[24px] text-ticker-100 new-amsterdam-regular'
+          className='w-[50%] portraitPad:w-[95%] h-[50px] overflow-hidden relative  text-[24px] text-ticker-100 new-amsterdam-regular'
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}

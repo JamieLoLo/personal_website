@@ -90,8 +90,8 @@ export default function Blog() {
         <Nav />
       </SessionProviderWrapper>
 
-      <div className='w-[85%]   h-[calc(100%-60px)] mt-[60px] relative flex'>
-        <div className='w-[70%] pl-[2.5vw] h-full relative py-[5%] pr-[5%] overflow-y-scroll overscroll-none'>
+      <div className='w-[85%] landscapePad:w-[90%] portraitPad:w-[90%] portraitPh:w-[95%] landscapePhone:w-[95%]  h-[calc(100%-60px)] mt-[60px] relative flex'>
+        <div className='w-[70%] portraitPh:w-full landscapePhone:w-full pl-[2.5vw] h-full relative py-[5%] pr-[5%] overflow-y-scroll overscroll-none'>
           {articles.data &&
             articles.data.map((item, index) => (
               <div key={`article_${item.id}`} className='w-full '>
@@ -107,7 +107,7 @@ export default function Blog() {
             ))}
           <div ref={bottomRef} className='h-[1px]'></div>
         </div>
-        <div className='w-[30%] h-full relative '>
+        <div className='w-[30%] h-full relative portraitPh:hidden landscapePhone:hidden '>
           <RightList
             categories={categories.data}
             articlesTotal={articles.total}
