@@ -1,6 +1,6 @@
 'use client'
 import Image from 'next/image'
-import { motion, AnimatePresence } from 'framer-motion'
+import { motion, AnimatePresence, m } from 'framer-motion'
 
 import CubeModel from '@/components/mainPage/CubeModel'
 import { uiState } from '@/lib/valtioState'
@@ -11,37 +11,7 @@ import Ticker from '@/components/mainPage/Ticker'
 export default function Home() {
   const { introVisible } = useSnapshot(uiState.introPage)
   const { loadingVisible } = useSnapshot(uiState.loading)
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
-  const [delta, setDelta] = useState({ x: 0, y: 0 })
-
-  useEffect(() => {
-    console.log(delta)
-  }, [delta])
-
-  useEffect(() => {
-    let lastPosition = { x: 0, y: 0 }
-
-    const handleMouseMove = (event) => {
-      const newPosition = { x: event.clientX, y: event.clientY }
-      setMousePosition(newPosition)
-
-      const deltaX = newPosition.x - lastPosition.x
-      const deltaY = newPosition.y - lastPosition.y
-      setDelta({ x: deltaX, y: deltaY })
-
-      lastPosition = newPosition
-    }
-
-    window.addEventListener('mousemove', handleMouseMove)
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove)
-    }
-  }, [])
-
-  const closeHandler = () => {
-    uiState.introPage.introVisible = false
-  }
+  const [showTicker, setShowTicker] = useState(false)
 
   useEffect(() => {
     if (loadingVisible) {
@@ -51,17 +21,41 @@ export default function Home() {
     }
   }, [loadingVisible])
 
+  const closeHandler = () => {
+    uiState.introPage.introVisible = false
+    setTimeout(() => {
+      setShowTicker(true)
+    }, 500)
+  }
+
   return (
     <main className=' fixed top-0 left-0 w-screen h-[100dvh]  overscroll-none bg-black'>
-      <Image
-        src='/images/bg10.webp'
-        alt='intro'
-        width={0}
-        height={0}
-        sizes='100vw'
-        priority
-        className=' w-full h-full min-w-[150vw] object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'
-      />
+      <motion.div
+        className=' w-full h-full min-w-[120vw] min-h-[calc(100dvh+40px)] object-cover absolute top-1/2 left-1/2  '
+        initial={{
+          x: '-50%',
+          y: '-50%',
+        }}
+        animate={{
+          x: '-50%',
+          y: 'calc(-50% - 15px)',
+        }}
+        transition={{
+          duration: 3,
+          repeat: Infinity,
+          repeatType: 'reverse',
+        }}
+      >
+        <Image
+          src='/images/mainPageBg.webp'
+          alt='intro'
+          width={0}
+          height={0}
+          sizes='100vw'
+          priority
+          className='w-full h-full object-cover'
+        />
+      </motion.div>
       <div className=' w-full h-full object-cover absolute top-0 left-0 bg-black/70'></div>
       <AnimatePresence>
         {introVisible && (
@@ -97,10 +91,11 @@ export default function Home() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      <CubeModel />
+      <div className='w-full h-full absolute top-0 left-0'>
+        <CubeModel />
+      </div>
       <div className='fixed bottom-[16px] left-[16px] w-full'>
-        <Ticker />
+        <Ticker visible={showTicker} />
       </div>
     </main>
   )
