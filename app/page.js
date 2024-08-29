@@ -94,7 +94,7 @@ export default function Home() {
       <div className='w-full h-full absolute top-0 left-0'>
         <CubeModel />
       </div>
-      <div className='fixed bottom-[16px] w-full flex justify-center'>
+      <div className='fixed bottom-[24px] portraitPad:bottom-[20px] w-full flex justify-center'>
         <Ticker visible={showTicker} />
       </div>
     </main>
