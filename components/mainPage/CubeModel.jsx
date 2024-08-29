@@ -216,7 +216,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       const rotateModel = () => {
         if (combinedRef.current) {
           // 使用 combinedRef
-          rotationRef.current += 0.003 // 控制旋轉速度
+          rotationRef.current += 0.00000000001 // 控制旋轉速度
           combinedRef.current.rotation.y = rotationRef.current
         }
 
