@@ -38,9 +38,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
   }, [forwardedRef])
 
   useEffect(() => {
-    if (!isLoaded) {
-      uiState.loading.loadingVisible = true
-    } else {
+    if (isLoaded) {
       setTimeout(() => {
         uiState.loading.loadingVisible = false
       }, 1000)
