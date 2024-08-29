@@ -16,10 +16,6 @@ export default function Blog() {
   const limit = 8
   const bottomRef = useRef(null)
 
-  useEffect(() => {
-    console.log(articles)
-  }, [articles])
-
   const fetchArticles = () => {
     getAllHandler(`/api/articles?limit=${limit}&offset=${offset}`, 'articles')
   }
