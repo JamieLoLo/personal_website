@@ -6,15 +6,22 @@ import RightList from '@/components/blog/RightList'
 import SessionProviderWrapper from '@/components/blog/SessionProviderWrapper'
 import { getAllHandler } from '@/lib/axiosHandler'
 import { uiState } from '@/lib/valtioState'
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { motion } from 'framer-motion'
 
 export default function Blog() {
   const { articles, categories } = useSnapshot(uiState)
+  const [offset, setOffset] = useState(0)
+  const limit = 8
+  const bottomRef = useRef(null)
+
+  useEffect(() => {
+    console.log(articles)
+  }, [articles])
 
   const fetchArticles = () => {
-    getAllHandler('/api/articles', 'articles')
+    getAllHandler(`/api/articles?limit=${limit}&offset=${offset}`, 'articles')
   }
 
   const fetchCategories = () => {
@@ -40,6 +47,41 @@ export default function Blog() {
       }, 1000)
     }
   }, [articles.data, categories.data])
+
+  // Intersection Observer for lazy loading
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (
+          entries[0].isIntersecting &&
+          articles.data.length < articles.total
+        ) {
+          setOffset((prevOffset) => prevOffset + limit)
+        }
+      },
+      {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      }
+    )
+
+    if (bottomRef.current) {
+      observer.observe(bottomRef.current)
+    }
+
+    return () => {
+      if (bottomRef.current) {
+        observer.unobserve(bottomRef.current)
+      }
+    }
+  }, [articles])
+
+  useEffect(() => {
+    if (offset > 0) {
+      fetchArticles()
+    }
+  }, [offset])
 
   return (
     <motion.div
@@ -67,6 +109,7 @@ export default function Blog() {
                 )}
               </div>
             ))}
+          <div ref={bottomRef} className='h-[1px]'></div>
         </div>
         <div className='w-[30%] h-full relative '>
           <RightList

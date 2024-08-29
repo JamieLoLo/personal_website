@@ -10,11 +10,16 @@ const Article = initArticleModel(sequelize, DataTypes)
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
   const categoryId = searchParams.get('params')
+  const limit = parseInt(searchParams.get('limit') || '8')
+  const offset = parseInt(searchParams.get('offset') || '0')
 
   const queryOptions = {
     order: [['createdAt', 'DESC']], // 按照 createdAt 降序排列
+    limit,
+    offset,
   }
 
+  // 透過分類搜尋文章
   if (categoryId) {
     queryOptions.where = { categoryId }
   }
@@ -40,6 +45,7 @@ export async function GET(request) {
         .replace(/<[^>]*>(.*?)<\/[^>]*>/g, '') // 移除標籤與內容
         .replace(/---+/g, '') // 移除 markdown 的分隔線
 
+      // 預覽 60 字
       article.dataValues.previewContent =
         contentWithoutTags.trim().length > 60
           ? contentWithoutTags.trim().slice(0, 60) + '...'
