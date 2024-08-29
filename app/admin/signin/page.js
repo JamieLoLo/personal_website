@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { isMobile as checkIsMobile } from 'react-device-detect'
 import { FaUserLarge } from 'react-icons/fa6'
 import { FaLock } from 'react-icons/fa6'
+import { uiState } from '@/lib/valtioState'
 
 export default function Admin() {
   const [account, setAccount] = useState('')
@@ -16,6 +17,7 @@ export default function Admin() {
 
   useEffect(() => {
     setIsMobile(checkIsMobile)
+    uiState.loading.loadingVisible = false
   }, [])
 
   const handleSubmit = async (e) => {
