@@ -148,8 +148,8 @@ export default function Blog() {
         <Nav />
       </SessionProviderWrapper>
 
-      <div className='w-[85%] landscapePad:w-[90%] portraitPad:w-[90%] portraitPh:w-[95%] landscapePhone:w-[95%]  h-[calc(100%-60px)] mt-[60px] relative flex  portraitPh:flex-col'>
-        <div className='w-full my-4 hidden portraitPh:flex'>
+      <div className='w-[85%] landscapePad:w-[90%] portraitPad:w-[90%] portraitPh:w-[95%] landscapePhone:w-[95%]  h-[calc(100%-60px)] mt-[60px] relative flex  portraitPh:flex-col landscapePhone:flex-col'>
+        <div className='w-full my-4 hidden portraitPh:flex landscapePhone:flex'>
           <Select
             onChange={controlCategory}
             options={options}

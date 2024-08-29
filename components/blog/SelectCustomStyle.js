@@ -49,6 +49,9 @@ export const customStyle = {
   menuList: (base) => ({
     ...base,
     padding: 0,
+    maxHeight: window && window.innerHeight < 400 ? 200 : 400,
+    borderBottomLeftRadius: '4px',
+    borderBottomRightRadius: '4px',
   }),
   dropdownIndicator: (base) => ({
     ...base,
