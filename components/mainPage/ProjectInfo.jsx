@@ -11,7 +11,7 @@ import { uiState } from '@/lib/valtioState'
 import { projectInfoData } from '@/database/projectInfoData'
 
 export default function ProjectInfo() {
-  const { visible, activeProject } = useSnapshot(uiState.projectInfo)
+  const { infoVisible, activeProject } = useSnapshot(uiState.projectInfo)
   const [isScrollBottom, setIsScrollBottom] = useState(false)
   const [showScrollFilter, setShowScrollFilter] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
@@ -55,9 +55,9 @@ export default function ProjectInfo() {
   }
 
   const closeHandler = () => {
-    uiState.projectInfo.visible = false
+    uiState.projectInfo.infoVisible = false
     setTimeout(() => {
-      uiState.projectInfo.activeProject = ''
+      uiState.activeProject = ''
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = 0
       }
@@ -67,10 +67,10 @@ export default function ProjectInfo() {
   return (
     <motion.div
       className={`w-screen h-[100dvh] fixed top-0 left-0 z-[40]  overscroll-none NotoSansR whitespace-pre-wrap text-justify ${
-        visible ? 'pointer-events-auto' : 'pointer-events-none'
+        infoVisible ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
       initial={{ opacity: 0 }}
-      animate={{ opacity: visible ? 1 : 0 }}
+      animate={{ opacity: infoVisible ? 1 : 0 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div
@@ -80,7 +80,7 @@ export default function ProjectInfo() {
       <motion.div
         className='w-[540px] portraitPh:w-[calc(100%-20px)]  h-[75%] landscapePad:h-[85%] portraitPh:h-[calc(100%-32px)] overflow-hidden absolute top-1/2 left-1/2 -translate-x-1/2 rounded-[20px] -translate-y-1/2 bg-infoBg-100 flex items-center justify-center'
         initial={{ x: '-50%', y: '100vh' }}
-        animate={{ x: '-50%', y: visible ? '-50%' : '100vh' }}
+        animate={{ x: '-50%', y: infoVisible ? '-50%' : '100vh' }}
         transition={{ duration: 0.5 }}
       >
         {showScrollFilter && (
