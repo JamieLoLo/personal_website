@@ -31,7 +31,7 @@ module.exports = {
           100: '#E7E7E1',
         },
         ticker: {
-          100: '#DA691D',
+          100: '#FDEA1F',
         },
         bgBlack: {
           100: '#2C2C2C',
