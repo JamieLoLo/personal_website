@@ -38,7 +38,7 @@ export default function PostPreview({ article, onRefresh, index }) {
           {article.title}
         </p>
         <ReactMarkdown
-          className='text-[16px] text-mainGrey-100 py-[16px] whitespace-pre-wrap text-justify'
+          className='text-[16px] text-mainGrey-100 py-[16px]  text-justify'
           rehypePlugins={[rehypeRaw]}
         >
           {article.previewContent}
