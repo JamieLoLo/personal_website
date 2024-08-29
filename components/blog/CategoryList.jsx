@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 import { getAllHandler } from '@/lib/axiosHandler'
+import { uiState } from '@/lib/valtioState'
 
 export default function CategoryList({ categories, articlesTotal }) {
   const { data: session } = useSession()
@@ -39,7 +40,9 @@ export default function CategoryList({ categories, articlesTotal }) {
               : 'text-mainGrey-100 hover:text-textBlack-100'
           }`}
           onClick={() => {
-            getAllHandler('/api/articles', 'articles')
+            uiState.lazyLoad.offset = 0
+            uiState.selectedCategory = null
+            getAllHandler('/api/articles', 'articles', {}, true)
           }}
         >
           All ({articlesTotal})
@@ -58,9 +61,14 @@ export default function CategoryList({ categories, articlesTotal }) {
                       : 'text-mainGrey-100 hover:text-textBlack-100'
                   }`}
                   onClick={() => {
-                    getAllHandler('/api/articles', 'articles', {
-                      params: category.id,
-                    })
+                    uiState.lazyLoad.offset = 0
+                    uiState.selectedCategory = category.id
+                    getAllHandler(
+                      '/api/articles',
+                      'articles',
+                      { params: category.id },
+                      true
+                    )
                   }}
                 >
                   {category.name} ({category.Articles.length})
