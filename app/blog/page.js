@@ -39,7 +39,7 @@ export default function Blog() {
       getAllHandler('/api/articles', 'articles', {}, true)
     } else {
       uiState.selectedCategory = e.value
-      getAllHandler('/api/articles', 'articles', { params: e.value }, true)
+      getAllHandler('/api/articles', 'articles', { categoryId: e.value }, true)
     }
   }
 
@@ -61,7 +61,7 @@ export default function Blog() {
 
   const fetchArticlesByCategory = (categoryId) => {
     getAllHandler(
-      `/api/articles?limit=${limit}&offset=${offset}&params=${categoryId}`,
+      `/api/articles?limit=${limit}&offset=${offset}&categoryId=${categoryId}`,
       'articles'
     )
   }

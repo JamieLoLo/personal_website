@@ -66,7 +66,7 @@ export default function CategoryList({ categories, articlesTotal }) {
                     getAllHandler(
                       '/api/articles',
                       'articles',
-                      { params: category.id },
+                      { categoryId: category.id },
                       true
                     )
                   }}

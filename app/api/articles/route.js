@@ -9,7 +9,7 @@ const Article = initArticleModel(sequelize, DataTypes)
 
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
-  const categoryId = searchParams.get('params')
+  const categoryId = searchParams.get('categoryId')
   const limit = parseInt(searchParams.get('limit') || '8')
   const offset = parseInt(searchParams.get('offset') || '0')
 
