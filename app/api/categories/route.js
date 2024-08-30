@@ -14,7 +14,7 @@ Article.associate({ Category })
 export async function GET() {
   try {
     const categories = await Category.findAll({
-      include: [{ model: Article }],
+      include: [{ model: Article, attributes: ['id'] }],
     })
 
     return NextResponse.json(categories)
