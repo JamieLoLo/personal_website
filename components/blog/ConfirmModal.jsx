@@ -4,7 +4,7 @@ import { uiState } from '@/lib/valtioState'
 import { isMobile as checkIsMobile } from 'react-device-detect'
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
-import { deleteHandler, getAllHandler } from '@/lib/axiosHandler'
+import { deleteHandler } from '@/lib/axiosHandler'
 import { useEffect, useState } from 'react'
 
 export default function ConfirmModal() {
