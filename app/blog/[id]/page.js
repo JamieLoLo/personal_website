@@ -35,7 +35,7 @@ export default function BlogPostPage() {
     if (article.data && article.data.length !== 0) {
       setTimeout(() => {
         uiState.loading.loadingVisible = false
-      }, 500)
+      }, 200)
     }
   }, [article.data])
 
