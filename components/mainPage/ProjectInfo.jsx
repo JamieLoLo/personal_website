@@ -61,7 +61,7 @@ export default function ProjectInfo() {
       if (scrollContainerRef.current) {
         scrollContainerRef.current.scrollTop = 0
       }
-    }, 600)
+    }, 300)
   }
 
   return (
