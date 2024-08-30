@@ -167,6 +167,7 @@ export default function ArticleEditPage() {
 
   const goBlogPage = () => {
     router.push(`/blog`)
+    uiState.lazyLoad.offset = 0
     getAllHandler(
       `/api/articles?limit=${limit}&offset=${offset}`,
       'articles',
