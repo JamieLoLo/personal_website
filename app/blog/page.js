@@ -20,7 +20,6 @@ export default function Blog() {
   const { offset } = useSnapshot(uiState.lazyLoad)
   const [category, setCategory] = useState(null)
   const scrollRef = useRef(null)
-
   const limit = 8
   const bottomRef = useRef(null)
 
