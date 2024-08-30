@@ -24,6 +24,7 @@ const Select = dynamic(() => import('react-select'), { ssr: false })
 export default function ArticleEditPage() {
   const { actionMode } = useSnapshot(uiState.adminArticle) // create, update
   const { categories, article } = useSnapshot(uiState)
+  const { limit, offset } = useSnapshot(uiState.lazyLoad)
   const [title, setTitle] = useState('')
   const [coverImage, setCoverImage] = useState('')
   const [coverImageDescription, setCoverImageDescription] = useState('')
@@ -166,6 +167,12 @@ export default function ArticleEditPage() {
 
   const goBlogPage = () => {
     router.push(`/blog`)
+    getAllHandler(
+      `/api/articles?limit=${limit}&offset=${offset}`,
+      'articles',
+      {},
+      true
+    )
     setTitle('')
   }
 
