@@ -2,8 +2,8 @@ import rehypeHighlight from 'rehype-highlight'
 import ReactMarkdown from 'react-markdown'
 import rehypeRaw from 'rehype-raw'
 import remarkGfm from 'remark-gfm'
-import '../../app/markdownStyle.css'
 import 'highlight.js/styles/github.css'
+import '../../app/markdownStyle.css'
 
 export default function CreatePreview({ content, viewMode }) {
   return (
