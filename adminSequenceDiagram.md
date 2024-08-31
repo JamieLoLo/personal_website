@@ -22,12 +22,13 @@ Admin -> Articles : Browse Articles
 ```plantuml
 @startuml
 actor Admin
-Admin -> SignIn : Sign in
+Admin -> nextAuth : Send credentials for authentication
 alt Sign-in succeeds
-    SignIn --> Admin : Sign-in succeeds
+    nextAuth --> Admin : Sign-in succeeds
     Admin -> Blog : Redirect to /blog
 else Sign-in fails
-    SignIn --> Admin : Sign-in fails
+    nextAuth --> Admin : Sign-in fails
+    Admin -> SignIn : Return to sign-in
 end
 @enduml
 ```
