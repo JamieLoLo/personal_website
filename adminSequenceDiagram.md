@@ -91,7 +91,36 @@ else Deletion fails
     Articles --> Admin : Deletion fails
 end
 @enduml
+```
 
+## 3.1 Uploading Images
+
+- In /admin/articles:
+  - Upload Image: axios.post('/api/articles/image', formData)
+    - If upload fails:
+      - Return an error message.
+    - If upload succeeds:
+      - Retrieve the public S3 URL.
+      - Use TinyURL API to shorten the URL.
+      - Display the shortened URL.
+
+```plantuml
+@startuml
+actor Admin
+Admin -> Articles : Upload Image (formData)
+alt Upload succeeds
+    Articles --> Admin : S3 URL retrieved
+    Admin -> TinyURL : Shorten URL
+    alt Shorten URL succeeds
+        TinyURL --> Admin : Shortened URL retrieved
+        Admin -> Articles : Display shortened URL
+    else Shorten URL fails
+        TinyURL --> Admin : Return error
+    end
+else Upload fails
+    Articles --> Admin : Return error
+end
+@enduml
 ```
 
 ## 4. Managing Categories
