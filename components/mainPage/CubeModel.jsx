@@ -59,13 +59,31 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
     }
 
     const nodes = gltf.nodes
+    const textureLoader = new THREE.TextureLoader()
+    let totalTextures = 0 // 總共需要加載的貼圖數量
+    let loadedTextures = 0 // 已經加載完成的貼圖數量
+
+    // 計算需要加載的貼圖數量
+    modelData.forEach((item) => {
+      if (nodes && nodes[item.name]) {
+        totalTextures += 1
+      }
+    })
+
+    if (nodes.Cube001) {
+      totalTextures += 1
+    }
+
+    const checkIfAllLoaded = () => {
+      loadedTextures += 1
+      if (loadedTextures === totalTextures) {
+        uiState.model.isLoaded = true
+      }
+    }
 
     modelData.forEach((item) => {
       if (nodes && nodes[item.name]) {
-        const textureLoader = new THREE.TextureLoader()
-        const newTexture = textureLoader.load(item.texture, () => {
-          uiState.model.isLoaded = true
-        })
+        const newTexture = textureLoader.load(item.texture, checkIfAllLoaded)
 
         newTexture.repeat.set(1, -1)
         newTexture.offset.set(0, 1)
@@ -99,12 +117,9 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
     })
 
     if (nodes.Cube001) {
-      const textureLoader = new THREE.TextureLoader()
       const texture = textureLoader.load(
         '/model/texture/cubeTexture.jpg',
-        () => {
-          uiState.model.isLoaded = true
-        }
+        checkIfAllLoaded
       )
 
       const material = new THREE.MeshStandardMaterial({
