@@ -105,9 +105,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
           nodes[item.name].userData = {
             onClick: () => {
               uiState.projectInfo.activeProject = item.id
-              setTimeout(() => {
-                uiState.projectInfo.infoVisible = true
-              }, 100)
+              uiState.projectInfo.infoVisible = true
             },
           }
         }
