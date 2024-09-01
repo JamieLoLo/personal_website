@@ -78,7 +78,7 @@ export default function ProjectInfo() {
         onClick={closeHandler}
       ></motion.div>
       <motion.div
-        className='w-[540px] portraitPh:w-[calc(100%-20px)]  h-[75%] landscapePad:h-[85%] portraitPh:h-[calc(100%-32px)] overflow-hidden absolute top-1/2 left-1/2 -translate-x-1/2 rounded-[20px] -translate-y-1/2 bg-infoBg-100 flex items-center justify-center'
+        className='w-[550px] portraitPh:w-[calc(100%-20px)]  h-[75%] landscapePad:h-[85%] portraitPh:h-[calc(100%-32px)] overflow-hidden absolute top-1/2 left-1/2 -translate-x-1/2 rounded-[20px] -translate-y-1/2 bg-infoBg-100 flex items-center justify-center'
         initial={{ x: '-50%', y: '100vh' }}
         animate={{ x: '-50%', y: infoVisible ? '-50%' : '100vh' }}
         transition={{ duration: 0.5 }}
@@ -123,7 +123,7 @@ export default function ProjectInfo() {
               <div className='w-full h-auto aspect-[1/0.52] relative mb-4'>
                 <Image
                   src={`/images/${projectInfoData[activeProject].img}`}
-                  alt='loading icon'
+                  alt='project cover image'
                   width={0}
                   height={0}
                   sizes='100vw'
@@ -143,6 +143,26 @@ export default function ProjectInfo() {
                   {projectInfoData[activeProject].jd}
                 </p>
               </div>
+              {projectInfoData[activeProject].game && (
+                <div className='mb-4'>
+                  <p className='text-[17px] NotoSansM mb-3'>互動遊戲</p>
+                  <div className='w-full h-auto aspect-[1/0.52] relative mb-3'>
+                    <Image
+                      src={`/images/${projectInfoData[activeProject].game.img}`}
+                      alt='game image'
+                      width={0}
+                      height={0}
+                      sizes='100vw'
+                      priority
+                      className='w-full h-auto object-contain'
+                    />
+                  </div>
+                  <p className='text-[15px]'>
+                    {projectInfoData[activeProject].game.content}
+                  </p>
+                </div>
+              )}
+
               <div>
                 <p className='text-[17px] NotoSansM mb-1'>展覽簡介</p>
                 <p className='text-[15px]'>
