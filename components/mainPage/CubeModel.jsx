@@ -107,7 +107,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
               uiState.projectInfo.activeProject = item.id
               setTimeout(() => {
                 uiState.projectInfo.infoVisible = true
-              }, 200)
+              }, 100)
             },
           }
         }
