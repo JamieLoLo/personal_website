@@ -83,7 +83,7 @@ export default function ProjectInfo() {
           : 'pointer-events-none'
       }`}
       initial={{ opacity: 0 }}
-      animate={{ opacity: infoVisible && imageLoaded ? 1 : 0 }}
+      animate={{ opacity: infoVisible ? 1 : 0 }}
       transition={{ duration: 0.5 }}
     >
       <motion.div
@@ -95,7 +95,7 @@ export default function ProjectInfo() {
         initial={{ x: '-50%', y: '100vh' }}
         animate={{
           x: '-50%',
-          y: infoVisible && imageLoaded ? '-50%' : '100vh',
+          y: infoVisible ? '-50%' : '100vh',
         }}
         transition={{ duration: 0.5 }}
       >
