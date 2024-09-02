@@ -1,36 +1,29 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 個人網站
 
-## Getting Started
+### 連結
 
-First, run the development server:
+[Website](https://personal-website-iota-peach.vercel.app/)
+[Postman API Documentation](https://documenter.getpostman.com/view/20538602/2sAXjKasCg#aec2b455-11ee-4aec-8d68-2cc80f0c850e)
+[ERD](https://hackmd.io/@jamielolo/HkMc4Een0)
+[Admin Sequence Diagram](https://hackmd.io/@jamielolo/Hy6B_56NR)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+---
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 技術
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+- Full-Stack: Next.js, bcryptjs
+- Front-End: Three.js, Valtio, Axios, Tailwind CSS, Lazy Loading
+- Back-End: MySQL / Sequelize
+- Database: AWS RDS, AWS S3
+- Deployment: Vercel
+- API Integrations: TinyURL
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+---
 
-## Learn More
+### 簡介
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 此專案分為兩大部分。
+- 首頁展示了已上線的專案介紹，用戶可通過旋轉立方體模型，點擊不同的面來查看專案內容。
+- 點擊立方體底部，可進入個人技術文章部落格。
+- 部落格文章目前正在從 [Medium](https://medium.com/@jamielolo) 搬遷，Medium 上有更完整的技術筆記。
+- 首頁中的五個已上線專案，由於保密協定，無法公開相關程式碼及技術細節，敬請見諒。
