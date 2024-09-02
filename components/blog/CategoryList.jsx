@@ -47,13 +47,10 @@ export default function CategoryList({ categories, articlesTotal }) {
         >
           All ({articlesTotal})
         </p>
-        {categories.map((category, index) => {
+        {categories.map((category) => {
           if (category.Articles.length !== 0) {
             return (
-              <div
-                key={`categoryList_${index}`}
-                className='mt-[3px] flex items-center'
-              >
+              <div key={category.id} className='mt-[3px] flex items-center'>
                 <p
                   className={`text-[14px]  NotoSansR cursor-pointer ${
                     isMobile

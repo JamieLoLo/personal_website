@@ -167,7 +167,7 @@ export default function Blog() {
         >
           {articles.data &&
             articles.data.map((item, index) => (
-              <div key={`article_${item.id}`} className='w-full '>
+              <div key={item.id} className='w-full '>
                 <PostPreview
                   index={index}
                   article={item}

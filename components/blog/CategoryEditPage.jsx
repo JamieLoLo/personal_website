@@ -159,9 +159,9 @@ export default function CategoryEditPage() {
         <table className='text-[18px] '>
           <tbody className='EB-GaramondR'>
             {categories.data &&
-              categories.data.map((category, index) => (
+              categories.data.map((category) => (
                 <tr
-                  key={`category${index}`}
+                  key={category.id}
                   className=' flex items-center justify-between'
                 >
                   <td className='pr-[60px] '>{category.name}</td>
