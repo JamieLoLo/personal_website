@@ -16,13 +16,6 @@ export default function ProjectInfo() {
   const [showScrollFilter, setShowScrollFilter] = useState(true)
   const [isMobile, setIsMobile] = useState(false)
   const scrollContainerRef = useRef()
-  const [imageLoaded, setImageLoaded] = useState(false)
-
-  useEffect(() => {
-    if (activeProject) {
-      setImageLoaded(false) // 切換時，重置圖片加載狀態
-    }
-  }, [activeProject])
 
   useEffect(() => {
     setIsMobile(checkIsMobile)
@@ -44,10 +37,6 @@ export default function ProjectInfo() {
   useEffect(() => {
     setShowScrollFilter(!isScrollBottom)
   }, [isScrollBottom])
-
-  const handleImageLoadComplete = () => {
-    setImageLoaded(true) // 當圖片加載完成時設置狀態為true
-  }
 
   const scrollHandle = () => {
     const scrollContainer = scrollContainerRef.current
@@ -78,9 +67,7 @@ export default function ProjectInfo() {
   return (
     <motion.div
       className={`w-screen h-[100dvh] fixed top-0 left-0 z-[40]  overscroll-none NotoSansR whitespace-pre-wrap text-justify ${
-        infoVisible && imageLoaded
-          ? 'pointer-events-auto'
-          : 'pointer-events-none'
+        infoVisible ? 'pointer-events-auto' : 'pointer-events-none'
       }`}
       initial={{ opacity: 0 }}
       animate={{ opacity: infoVisible ? 1 : 0 }}
@@ -145,7 +132,6 @@ export default function ProjectInfo() {
                   sizes='100vw'
                   priority
                   className='w-full h-auto object-contain'
-                  onLoad={handleImageLoadComplete}
                 />
               </div>
               <div className='mb-4'>
