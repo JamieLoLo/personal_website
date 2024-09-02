@@ -9,6 +9,7 @@ import { useSnapshot } from 'valtio'
 import Ticker from '@/components/mainPage/Ticker'
 import { windowSizeState } from '@/lib/windowSize'
 import { isMobile as checkIsMobile } from 'react-device-detect'
+import { projectInfoData } from '@/database/projectInfoData'
 
 export default function Home() {
   const { introVisible } = useSnapshot(uiState.introPage)
@@ -21,6 +22,24 @@ export default function Home() {
 
   useEffect(() => {
     setIsMobile(checkIsMobile)
+  }, [])
+
+  // 預先加載專案封面照片
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const preloadImages = () => {
+        const images = Object.values(projectInfoData).map((item) => {
+          return `/images/${item.img}`
+        })
+
+        images.forEach((image) => {
+          const img = new window.Image() // 這邊一定要加 window，確保只在瀏覽器端進行，否則會報錯。
+          img.src = image
+        })
+      }
+
+      preloadImages()
+    }
   }, [])
 
   useEffect(() => {
