@@ -2,10 +2,10 @@
 
 ### 連結
 
-- [Website](https://personal-website-iota-peach.vercel.app/)
-- [Postman API Documentation](https://documenter.getpostman.com/view/20538602/2sAXjKasCg#aec2b455-11ee-4aec-8d68-2cc80f0c850e)
-- [ERD](https://hackmd.io/@jamielolo/HkMc4Een0)
-- [Admin Sequence Diagram](https://hackmd.io/@jamielolo/Hy6B_56NR)
+- <a href="https://personal-website-iota-peach.vercel.app/" target='_blank'>Website</a>
+- <a href="https://documenter.getpostman.com/view/20538602/2sAXjKasCg#aec2b455-11ee-4aec-8d68-2cc80f0c850e" target='_blank'>Postman API Documentation</a>
+- <a href="https://hackmd.io/@jamielolo/HkMc4Een0" target='_blank'>ERD</a>
+- <a href="https://hackmd.io/@jamielolo/Hy6B_56NR" target='_blank'>Admin Sequence Diagram</a>
 
 ---
 
