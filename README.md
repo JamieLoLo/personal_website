@@ -1,15 +1,15 @@
-# 個人網站
+# Personal Website
 
-### 連結
+### Link
 
-- <a href="https://personal-website-iota-peach.vercel.app/" target='_blank'>Website</a>
-- <a href="https://documenter.getpostman.com/view/20538602/2sAXjKasCg#aec2b455-11ee-4aec-8d68-2cc80f0c850e" target='_blank'>Postman API Documentation</a>
-- <a href="https://hackmd.io/@jamielolo/HkMc4Een0" target='_blank'>ERD</a>
-- <a href="https://hackmd.io/@jamielolo/Hy6B_56NR" target='_blank'>Admin Sequence Diagram</a>
+- [Website](https://personal-website-iota-peach.vercel.app/)
+- [Postman API Documentation](https://documenter.getpostman.com/view/20538602/2sAXjKasCg#aec2b455-11ee-4aec-8d68-2cc80f0c850e)
+- [ERD](https://hackmd.io/@jamielolo/HkMc4Een0)
+- [Admin Sequence Diagram](https://hackmd.io/@jamielolo/Hy6B_56NR)
 
 ---
 
-### 技術
+### Skills
 
 - Full-Stack: Next.js, bcryptjs
 - Front-End: Three.js, Valtio, Axios, Tailwind CSS, Lazy Loading
@@ -27,3 +27,11 @@
 - 點擊立方體底部，可進入個人技術文章部落格。
 - 部落格文章目前正在從 [Medium](https://medium.com/@jamielolo) 搬遷，Medium 上有更完整的技術筆記。
 - 首頁中的五個已上線專案，由於保密協定，無法公開相關程式碼及技術細節，敬請見諒。
+
+### Introduction
+
+- This project is divided into two main parts.
+- The homepage features an introduction to the launched projects. Users can rotate the cube model and click on different faces to view the project details.
+- Clicking on the bottom of the cube will lead to my personal blog containing technical articles.
+- The blog posts are currently being migrated from [Medium](https://medium.com/@jamielolo), where I have more comprehensive technical notes available.
+- As for the five launched projects showcased on the homepage, due to confidentiality agreements, I cannot disclose the related code and technical details. I appreciate your understanding.
