@@ -47,15 +47,13 @@ export default function PostPreview({ article, onRefresh, index }) {
           {article.createdAt}
         </p>
       </div>
-      <div className='w-[250px] h-auto aspect-[1/0.52] relative  ml-[50px] mt-[20px] flex items-center portraitPad:hidden landscapePhone:hidden'>
+      <div className='w-[250px] h-[130px] relative ml-[50px] mt-[20px] portraitPad:hidden landscapePhone:hidden'>
         <Image
           src={article.coverImage}
           alt='cover image'
-          width={0}
-          height={0}
-          sizes='100vw'
-          priority
-          className='w-full h-auto object-contain'
+          width={250}
+          height={130}
+          className='w-full h-full object-cover'
         />
       </div>
     </div>
