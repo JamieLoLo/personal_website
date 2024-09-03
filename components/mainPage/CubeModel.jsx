@@ -60,7 +60,6 @@ const MeshComponent = () => {
       }
     }
 
-    console.log(totalTextures)
     // 處理材質
     const setMaterialProperties = (material, texture) => {
       material.map = texture // 指定基礎材質 (圖片)
