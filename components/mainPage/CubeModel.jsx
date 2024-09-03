@@ -1,14 +1,14 @@
-import { useEffect, useRef, forwardRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
+import { useSnapshot } from 'valtio'
+import { useRouter } from 'next/navigation'
 import { Canvas, useLoader, useThree } from '@react-three/fiber'
 import { OrbitControls } from '@react-three/drei'
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader'
 import * as THREE from 'three'
-import { useRouter } from 'next/navigation'
 import { uiState } from '@/lib/valtioState'
-import ProjectInfo from './ProjectInfo'
 import { modelData } from '@/database/projectInfoData'
-import { useSnapshot } from 'valtio'
 import { windowSizeState } from '@/lib/windowSize'
+import ProjectInfo from './ProjectInfo'
 
 // glb 是 gltf 的一種，只是 glb 是打包好的檔案 (像是材質紋理等)，因為打包過的關係，更適合用在網頁上。
 const fileUrl = '/model/Cube.glb'
