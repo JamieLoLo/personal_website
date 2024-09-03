@@ -10,35 +10,23 @@ import { modelData } from '@/database/projectInfoData'
 import { useSnapshot } from 'valtio'
 import { windowSizeState } from '@/lib/windowSize'
 
+// glb 是 gltf 的一種，只是 glb 是打包好的檔案 (像是材質紋理等)，因為打包過的關係，更適合用在網頁上。
 const fileUrl = '/model/Cube.glb'
 
-const MeshComponent = forwardRef((props, forwardedRef) => {
+const MeshComponent = () => {
   const { introVisible } = useSnapshot(uiState.introPage)
   const { infoVisible } = useSnapshot(uiState.projectInfo)
   const { isLoaded } = useSnapshot(uiState.model)
-
-  const gltf = useLoader(GLTFLoader, fileUrl)
   const { scene, camera } = useThree()
+  // 加載後返回一個物件，裡面會包含可以用的方法和屬性，例如 scene/node。
+  const gltf = useLoader(GLTFLoader, fileUrl)
   const initialClickPosition = useRef({ x: 0, y: 0 })
   const router = useRouter()
-  const raycaster = useRef(new THREE.Raycaster())
-  const mouse = useRef(new THREE.Vector2())
+  const raycaster = useRef(new THREE.Raycaster()) // 檢測滑鼠點擊或懸停是否在3D物件上
+  const mouse = useRef(new THREE.Vector2()) // 滑鼠二維坐標
   const { mobileMode } = useSnapshot(windowSizeState)
-
   const internalRef = useRef() // 創建本地 ref
   const rotationRef = useRef(0) // 記錄旋轉角度
-
-  // 合併 internalRef 與 forwardedRef
-  const combinedRef = useRef()
-
-  useEffect(() => {
-    combinedRef.current = internalRef.current
-    if (typeof forwardedRef === 'function') {
-      forwardedRef(combinedRef.current)
-    } else if (forwardedRef) {
-      forwardedRef.current = combinedRef.current
-    }
-  }, [forwardedRef])
 
   useEffect(() => {
     if (isLoaded) {
@@ -51,27 +39,38 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
     }
   }, [isLoaded])
 
-  // 加载模型和材质
+  // 加載模型和材質，並確認材質全部加載完成。
   useEffect(() => {
-    if (!camera || !camera.isPerspectiveCamera) {
-      console.error('Camera is not a valid PerspectiveCamera')
-      return
-    }
-
     const nodes = gltf.nodes
     const textureLoader = new THREE.TextureLoader()
     let totalTextures = 0 // 總共需要加載的貼圖數量
     let loadedTextures = 0 // 已經加載完成的貼圖數量
 
     // 計算需要加載的貼圖數量
-    modelData.forEach((item) => {
-      if (nodes && nodes[item.name]) {
+    const countTextures = () => {
+      modelData.forEach((item) => {
+        if (nodes?.[item.name]) {
+          totalTextures += 1
+        }
+      })
+
+      // Cube001 是整個立方體的透明層，需要單獨處理。
+      if (nodes?.Cube001) {
         totalTextures += 1
       }
-    })
+    }
 
-    if (nodes.Cube001) {
-      totalTextures += 1
+    console.log(totalTextures)
+    // 處理材質
+    const setMaterialProperties = (material, texture) => {
+      material.map = texture // 指定基礎材質 (圖片)
+      material.emissive = new THREE.Color('#E9E9E9')
+      material.emissiveIntensity = 1.25
+      material.emissiveMap = texture // 指定自發光材質
+      material.opacity = 0.9
+      material.transparent = true
+      material.side = THREE.DoubleSide
+      material.needsUpdate = true
     }
 
     const checkIfAllLoaded = () => {
@@ -81,58 +80,52 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       }
     }
 
-    modelData.forEach((item) => {
-      if (nodes && nodes[item.name]) {
-        const newTexture = textureLoader.load(item.texture, checkIfAllLoaded)
+    const applyTextures = () => {
+      modelData.forEach((item) => {
+        if (nodes?.[item.name]) {
+          const texture = textureLoader.load(item.texture, checkIfAllLoaded)
 
-        newTexture.repeat.set(1, -1)
-        newTexture.offset.set(0, 1)
+          // 調整貼圖的角度和偏移
+          texture.repeat.set(1, -1)
+          texture.offset.set(0, 1)
 
-        const material = nodes[item.name].material
-        material.map = newTexture
+          setMaterialProperties(nodes[item.name].material, texture)
 
-        material.emissive = new THREE.Color('#E9E9E9')
-        material.emissiveIntensity = 1.25
-        material.emissiveMap = newTexture
-
-        if (item.name === 'Cube001_6') {
-          material.opacity = 0.9
-          material.transparent = true
-          nodes[item.name].userData = { onClick: () => router.push('/blog') }
-        } else {
-          material.opacity = 0.9
-          material.transparent = true
-          nodes[item.name].userData = {
-            onClick: () => {
-              uiState.projectInfo.activeProject = item.id
-              setTimeout(() => {
-                uiState.projectInfo.infoVisible = true
-              }, 250)
-            },
-          }
+          // userData 是一個自定義的屬性，可以用來儲存任何數據，或是事件。
+          nodes[item.name].userData =
+            item.name === 'Cube001_6'
+              ? { onClick: () => router.push('/blog') }
+              : {
+                  onClick: () => {
+                    uiState.projectInfo.activeProject = item.id
+                    setTimeout(() => {
+                      uiState.projectInfo.infoVisible = true
+                    }, 250)
+                  },
+                }
         }
-        material.side = THREE.DoubleSide
-        material.needsUpdate = true
-      }
-    })
-
-    if (nodes.Cube001) {
-      const texture = textureLoader.load(
-        '/model/texture/cubeTexture.jpg',
-        checkIfAllLoaded
-      )
-
-      const material = new THREE.MeshStandardMaterial({
-        emissive: 'white',
-        side: THREE.DoubleSide,
-        map: texture,
-        emissiveMap: texture,
-        opacity: 0.7,
-        transparent: true,
       })
-      nodes.Cube001.renderOrder = 2
-      nodes.Cube001.material = material
+
+      if (nodes?.Cube001) {
+        const texture = textureLoader.load(
+          '/model/texture/cubeTexture.jpg',
+          checkIfAllLoaded
+        )
+        const material = new THREE.MeshStandardMaterial({
+          emissive: 'white',
+          side: THREE.DoubleSide,
+          map: texture,
+          emissiveMap: texture,
+          opacity: 0.7,
+          transparent: true,
+        })
+        nodes.Cube001.renderOrder = 2
+        nodes.Cube001.material = material
+      }
     }
+
+    countTextures()
+    applyTextures()
   }, [gltf, scene, camera, router])
 
   // 事件監聽
@@ -140,6 +133,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
     const onPointerMove = (event) => {
       if (!isLoaded) return
 
+      // 將二維坐標轉換為可在3D空間中使用的坐標
       mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1
       mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1
 
@@ -147,7 +141,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
       const intersects = raycaster.current.intersectObjects(
         scene.children,
         true
-      )
+      ) // 第二個參數會檢查所有子對象是否有相交的狀況。
 
       if (intersects.length > 0) {
         const intersected = intersects[0].object
@@ -175,6 +169,7 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
 
       const deltaX = Math.abs(event.clientX - initialClickPosition.current.x)
       const deltaY = Math.abs(event.clientY - initialClickPosition.current.y)
+      // 當滑鼠移動的距離小於 5 像素時，視為點擊事件，避免在滾動時觸發點擊。
       if (deltaX <= 5 && deltaY <= 5) {
         mouse.current.x = (event.clientX / window.innerWidth) * 2 - 1
         mouse.current.y = -(event.clientY / window.innerHeight) * 2 + 1
@@ -215,26 +210,10 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
   useEffect(() => {
     if (isLoaded) {
       const rotateModel = () => {
-        if (combinedRef.current) {
+        if (internalRef.current) {
           rotationRef.current += 0.003 // 控制旋轉速度
-          combinedRef.current.rotation.y = rotationRef.current
+          internalRef.current.rotation.y = rotationRef.current
         }
-
-        requestAnimationFrame(rotateModel)
-      }
-      rotateModel()
-    }
-  }, [isLoaded])
-
-  useEffect(() => {
-    if (isLoaded) {
-      const rotateModel = () => {
-        if (combinedRef.current) {
-          // 使用 combinedRef
-          rotationRef.current += 0.00000000001 // 控制旋轉速度
-          combinedRef.current.rotation.y = rotationRef.current
-        }
-
         requestAnimationFrame(rotateModel)
       }
       rotateModel()
@@ -242,16 +221,11 @@ const MeshComponent = forwardRef((props, forwardedRef) => {
   }, [isLoaded])
 
   return (
-    <>
-      <mesh
-        ref={internalRef} // 绑定内部ref
-        scale={mobileMode ? 1.2 : 1.6}
-      >
-        <primitive object={gltf.scene} />
-      </mesh>
-    </>
+    <mesh ref={internalRef} scale={mobileMode ? 1.2 : 1.6}>
+      <primitive object={gltf.scene} />
+    </mesh>
   )
-})
+}
 
 MeshComponent.displayName = 'MeshComponent'
 
