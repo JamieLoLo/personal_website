@@ -12,14 +12,13 @@ export const authOptions = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        account: { label: 'Account', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        account: { type: 'text' },
+        password: { type: 'password' },
       },
       async authorize(credentials) {
         try {
-          // 确保连线到数据库
+          // 確認資料庫連線，驗證成功會自動往下進行。
           await sequelize.authenticate()
-
           const user = await Admin.findOne({
             where: { account: credentials.account },
           })
