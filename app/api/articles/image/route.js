@@ -4,6 +4,7 @@ import { shortenUrlWithTinyURL } from '@/lib/shortenUrl'
 import { NextResponse } from 'next/server'
 import { requireAdminSession } from '@/lib/auth'
 
+// AWS SDK S3 client
 const s3Client = new S3Client({
   region: process.env.AWS_REGION,
   credentials: {
@@ -12,10 +13,10 @@ const s3Client = new S3Client({
   },
 })
 
-async function uploadImageToS3(file, fileName, type) {
+async function uploadImageToS3(file, type) {
   const params = {
     Bucket: process.env.AWS_S3_BUCKET_NAME,
-    Key: `${Date.now()}-${fileName}`,
+    Key: `${Date.now()}-${uuid()}`,
     Body: file,
     ContentType: type,
     ACL: 'public-read',
@@ -48,13 +49,8 @@ export async function POST(req) {
     }
 
     const mimeType = file.type
-    const fileExtension = mimeType.split('/')[1]
-    const buffer = Buffer.from(await file.arrayBuffer())
-    const url = await uploadImageToS3(
-      buffer,
-      uuid() + '.' + fileExtension,
-      mimeType
-    )
+    const buffer = Buffer.from(await file.arrayBuffer()) // Buffer 是 Node.js 中用來處理二進制數據的對象
+    const url = await uploadImageToS3(buffer, mimeType)
 
     // 縮短URL
     const shortUrl = await shortenUrlWithTinyURL(url)
