@@ -9,19 +9,6 @@ import { requireAdminSession } from '@/lib/auth'
 const Category = initCategoryModel(sequelize, DataTypes)
 const Article = initArticleModel(sequelize, DataTypes)
 
-// export async function GET(req, { params }) {
-// try {
-//   const article = await Article.findByPk(params.id)
-//   return NextResponse.json(article)
-// } catch (error) {
-//   console.error('Error fetching article:', error)
-//   return NextResponse.json(
-//     { error: 'Failed to fetch article' },
-//     { status: 500 }
-//   )
-// }
-// }
-
 export async function PUT(req, { params }) {
   // 驗證管理者身份
   const authResult = await requireAdminSession()
