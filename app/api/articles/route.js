@@ -41,6 +41,9 @@ export async function GET(request) {
       ).format(date)
 
       // 生成預覽內容
+      // 第一行的 \ 是轉義符，把閉標籤的 / 轉義為一般字元。
+      // g 表示全局匹配，每篇文章都要。
+      // + 表示前面的符號往上加，/---+/g 也就是三個以上包含三個的破折號都會被算進去
       const contentWithoutTags = article.content
         .replace(/<[^>]*>(.*?)<\/[^>]*>/g, '') // 移除標籤與內容
         .replace(/---+/g, '') // 移除 markdown 的分隔線
