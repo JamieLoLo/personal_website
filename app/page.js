@@ -11,8 +11,6 @@ import { windowSizeState } from '@/lib/windowSize'
 import { isMobile as checkIsMobile } from 'react-device-detect'
 import { projectInfoData } from '@/database/projectInfoData'
 
-// test for git commit
-
 export default function Home() {
   const { introVisible } = useSnapshot(uiState.introPage)
   const { loadingVisible } = useSnapshot(uiState.loading)
